@@ -1,3 +1,12 @@
+node_modules
+
+
+#environment variables
+*.env
+
+#configs
+config.json
+
 # Logs
 logs
 *.log
