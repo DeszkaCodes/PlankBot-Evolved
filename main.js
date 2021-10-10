@@ -7,7 +7,7 @@ const bot = new Client( {intents: intents} );
 
 
 bot.once("ready", () => {
-    console.log("Bot is ready")
+    console.log(`${bot.user.username} is ready`);
 });
 
 
