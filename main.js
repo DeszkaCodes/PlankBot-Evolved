@@ -18,13 +18,17 @@ bot.once("ready", () => {
 bot.on("messageCreate", async message => {
     if(message.author.bot) return;
 
-    const PREFIX = "!pb "
+    const PREFIX = "!pb ";
 
-    console.log(`add xp to ${message.author.username}`);
+    console.debug(`add xp to ${message.author.username}`);
 
-    if(!message.content.startsWith(PREFIX) || !message.content.startsWith(`<@!${bot.user.id}>`)) return;
+    console.debug(`echo ${message.content}`);
+
+    console.debug(!(message.content.startsWith(PREFIX) || message.content.startsWith(`<@!${bot.user.id}>`)));
+
+    if(!(message.content.startsWith(PREFIX) || message.content.startsWith(`<@!${bot.user.id}>`))) return;
     
-    console.log("mentioned");
+    console.debug("mentioned");
 
     await message.reply("got it");
 
