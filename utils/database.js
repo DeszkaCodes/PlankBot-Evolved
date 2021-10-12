@@ -1,11 +1,28 @@
 const Sequelize = require("sequelize");
+const Settings = require("../utils/settings");
+const fs = require("fs");
 
 //Connection
+if(!fs.existsSync("./data/database/db.sqlite")){
+
+    console.log("Database file does not exist");
+
+    fs.writeFile("./data/database/db.sqlite", "", function (err) {
+        if (err){
+            console.error("Data base file could not be written");
+            console.error(err.message);
+            throw err;
+        }else
+            console.log("Database successfully created");
+    });
+}
+
 const sequelize = new Sequelize("database", "user", "password", {
     host: 'localhost',
 	dialect: 'sqlite',
-	logging: false,
-    storage: "./data/database/db.sqlite"
+	logging: console.log,
+    storage: "./data/database/db.sqlite",
+    force: false
 });
 
 
@@ -31,6 +48,9 @@ const LocalData = sequelize.define("LocalData", {
         allowNull: false,
         defaultValue: 0
     }
+},
+{
+    timestamps: false
 });
 
 const GlobalData = sequelize.define("GlobalData", {
@@ -44,15 +64,18 @@ const GlobalData = sequelize.define("GlobalData", {
         allowNull: false,
         defaultValue: 0
     }
+},
+{
+    timestamps: false
 });
 
 
 //FUNCTIONS
 function Init(){
     try{
-        LocalData.sync();
+        LocalData.sync({force: false});
 
-        GlobalData.sync();
+        GlobalData.sync({force: false});
     }
     catch (error){
         console.error(error.name())
