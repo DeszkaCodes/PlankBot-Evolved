@@ -1,5 +1,6 @@
 const { Client, Intents } = require('discord.js');
-const { Settings } = require("./util/settings")
+const { Settings } = require("./util/settings");
+const Database = require("./utils/database");
 
 // Setting up intents and bot
 const intents = [ 
