@@ -20,7 +20,7 @@ if(!fs.existsSync("./data/database/db.sqlite")){
 const sequelize = new Sequelize("database", "user", "password", {
     host: 'localhost',
 	dialect: 'sqlite',
-	logging: console.log,
+	logging: false,
     storage: "./data/database/db.sqlite",
     force: false
 });
@@ -69,19 +69,38 @@ const GlobalData = sequelize.define("GlobalData", {
     timestamps: false
 });
 
+const ServerData =sequelize.define("ServerData", {
+    ID: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        allowNull: false
+    },
+    PREMIUM: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    },
+    PREFIX: {
+        type: Sequelize.STRING,
+        allowNull: true,
+    }
+});
+
 
 //FUNCTIONS
 function Init(){
     try{
         LocalData.sync({force: false});
-
         GlobalData.sync({force: false});
+        ServerData.sync({force: false});
     }
     catch (error){
-        console.error(error.name())
+        console.error(error.name());
+        console.error(error.message());
+        console.error(error.stack());
     }
 };
 
 
 //EXPORTS
-module.exports = { Init, LocalData, GlobalData };
+module.exports = { Init, LocalData, GlobalData, ServerData };
