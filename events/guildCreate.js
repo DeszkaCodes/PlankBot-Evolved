@@ -1,5 +1,4 @@
 const Database = require("../utils/database");
-const { Op } = require("sequelize");
 
 module.exports = {
     name: "guildCreate",
