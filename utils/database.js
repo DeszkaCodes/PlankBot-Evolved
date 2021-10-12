@@ -83,6 +83,10 @@ const ServerData =sequelize.define("ServerData", {
     PREFIX: {
         type: Sequelize.STRING(10),
         allowNull: true,
+    },
+    MEMBERCHANNEL: {
+        type: Sequelize.INTEGER,
+        allowNull: true
     }
 },
 { 
