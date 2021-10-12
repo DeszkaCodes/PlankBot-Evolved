@@ -16,9 +16,9 @@ for (const file of eventFiles){
     const event = require("./events/" + file);
 
     if(event.once)
-        bot.once(event.name, async (...args) => event.execute(...args));
+        bot.once(event.name, (...args) => event.execute(...args));
     else
-        bot.on(event.name, async (...args) => event.execute(bot, ...args));
+        bot.on(event.name, (...args) => event.execute(bot, ...args));
 }
 
 

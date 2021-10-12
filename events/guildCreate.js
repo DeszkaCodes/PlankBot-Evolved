@@ -6,7 +6,7 @@ module.exports = {
 
         const serverData = await Database.ServerData.findCreateFind({
             where: { ID: guild.id },
-            defaults: { ID: guild.id, PREFIX: null }
+            defaults: { ID: guild.id }
         });
 
     }
