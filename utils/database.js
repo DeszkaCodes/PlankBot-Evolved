@@ -84,6 +84,9 @@ const ServerData =sequelize.define("ServerData", {
         type: Sequelize.STRING,
         allowNull: true,
     }
+},
+{ 
+    timestamps: false
 });
 
 
