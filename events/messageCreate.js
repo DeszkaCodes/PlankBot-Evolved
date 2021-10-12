@@ -22,6 +22,10 @@ module.exports = {
                 where: {
                     SERVERID: message.guildId,
                     ID: message.author.id
+                },
+                defaults: {
+                    SERVERID: message.guildId,
+                    ID: message.author.id,
                 }
             });
 
