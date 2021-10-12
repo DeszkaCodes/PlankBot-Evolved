@@ -1,6 +1,6 @@
+const fs = require('fs');
 const { Client, Intents } = require('discord.js');
-const { Settings } = require("./util/settings");
-const Database = require("./utils/database");
+const Settings = require("./utils/settings");
 
 // Setting up intents and bot
 const intents = [ 
@@ -9,31 +9,18 @@ const intents = [
 const bot = new Client( {intents: intents} );
 
 
-//on bot ready
-bot.once("ready", () => {
-    console.log(`${bot.user.username} is ready`);
-});
+//Load events
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith(".js"));
 
+for (const file of eventFiles){
+    const event = require("./events/" + file);
 
-//on message
-bot.on("messageCreate", async message => {
-    if(message.author.bot) return;
+    if(event.once)
+        bot.once(event.name, async (...args) => event.execute(...args));
+    else
+        bot.on(event.name, async (...args) => event.execute(bot, ...args));
+}
 
-    const PREFIX = "!pb ";
-
-    console.debug(`add xp to ${message.author.username}`);
-
-    console.debug(`echo ${message.content}`);
-
-    console.debug(!(message.content.startsWith(PREFIX) || message.content.startsWith(`<@!${bot.user.id}>`)));
-
-    if(!(message.content.startsWith(PREFIX) || message.content.startsWith(`<@!${bot.user.id}>`))) return;
-    
-    console.debug("mentioned");
-
-    await message.reply("got it");
-
-});
 
 //Logging in bot
 bot.login(Settings.token);
