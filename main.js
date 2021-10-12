@@ -26,6 +26,8 @@ bot.on("messageCreate", async message => {
     
     console.log("mentioned");
 
+    await message.reply("got it");
+
 });
 
 //Logging in bot
