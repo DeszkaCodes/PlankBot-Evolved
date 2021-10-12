@@ -71,7 +71,7 @@ const GlobalData = sequelize.define("GlobalData", {
 
 const ServerData =sequelize.define("ServerData", {
     ID: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(),
         primaryKey: true,
         allowNull: false
     },
@@ -81,7 +81,7 @@ const ServerData =sequelize.define("ServerData", {
         defaultValue: false
     },
     PREFIX: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(10),
         allowNull: true,
     }
 },
@@ -93,9 +93,9 @@ const ServerData =sequelize.define("ServerData", {
 //FUNCTIONS
 function Init(){
     try{
-        LocalData.sync({force: false});
-        GlobalData.sync({force: false});
-        ServerData.sync({force: false});
+        LocalData.sync({force: false, alter: true});
+        GlobalData.sync({force: false, alter: true});
+        ServerData.sync({force: false, alter: true});
     }
     catch (error){
         console.error(error.name());
