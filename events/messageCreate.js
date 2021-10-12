@@ -19,20 +19,14 @@ module.exports = {
         try{
             //Try to fetch the user's data or create it
             const localData = await Database.LocalData.findOrCreate({
-                where: {
-                    SERVERID: message.guildId,
-                    ID: message.author.id
-                },
-                defaults: {
-                    SERVERID: message.guildId,
-                    ID: message.author.id,
-                }
+                where: { [Op.and]: { SERVERID: message.guildId, ID: message.author.id } },
+                defaults: { SERVERID: message.guildId, ID: message.author.id, }
             });
 
             //Increment the exp of the user by a random amount
             const affectedRows = await Database.LocalData.increment(
                 { EXP:  +Random.RandomInt(expConstraints.min, expConstraints.max) },
-                { where: { [Op.and]: [{ SERVERID: message.guildId, ID: message.author.id }] } }
+                { where: { [Op.and]: { SERVERID: message.guildId, ID: message.author.id } } }
             );
 
         }catch(error){
