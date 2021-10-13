@@ -97,9 +97,9 @@ const ServerData =sequelize.define("ServerData", {
 //FUNCTIONS
 function Init(){
     try{
-        LocalData.sync({force: false, alter: true});
-        GlobalData.sync({force: false, alter: true});
-        ServerData.sync({force: false, alter: true});
+        LocalData.sync({force: false });
+        GlobalData.sync({force: false });
+        ServerData.sync({force: false });
     }
     catch (error){
         console.error(error.name());
