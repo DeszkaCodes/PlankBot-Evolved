@@ -59,6 +59,24 @@ module.exports = {
 
         if(!(StartsWithStringArray(message.content, PREFIX) || message.content.startsWith(`<@!${bot.user.id}>`))) return;
 
-        await message.reply("got it");
+        const args = message.content.trim().split(/ +/).slice(1);
+	    const command = args.shift().toLowerCase();
+
+
+        if(!bot.commands.has(command)){
+            await message.reply("Ez a parancs nem létezik.");
+            return;
+        }
+
+
+        try{
+            bot.commands.get(command).execute(bot, message, args);
+        }catch(err){
+            console.error(err.name);
+            console.error(err.message);
+            console.error(err.stack);
+
+            await message.reply("Hiba történt.")
+        }
     }
 };

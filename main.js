@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { Client, Intents } = require('discord.js');
+const Discord = require('discord.js')
 const { Settings } = require("./utils/settings");
 
 // Setting up intents and bot
@@ -19,6 +20,18 @@ for (const file of eventFiles){
         bot.once(event.name, (...args) => event.execute(...args));
     else
         bot.on(event.name, (...args) => event.execute(bot, ...args));
+}
+
+
+//Load commands
+bot.commands = new Discord.Collection();
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith(".js"));
+
+for (const file of commandFiles){
+    const command = require("./commands/" + file);
+
+    bot.commands.set(command.name, command);
 }
 
 
