@@ -1,4 +1,5 @@
-const Database = require("../utils/database")
+const Database = require("../utils/database");
+const { Colors } = require("../utils/ansi")
 
 module.exports = {
     name: "ready",
@@ -6,6 +7,6 @@ module.exports = {
     execute(bot){
         Database.Init();
 
-        console.log(`${bot.user.username} is ready`);
+        console.log(`${Colors.Text.Green}${bot.user.username} is ready${Colors.Text.White}`);
     }
 };
