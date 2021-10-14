@@ -115,10 +115,10 @@ const ChannelData = sequelize.define("ChannelData", {
 //FUNCTIONS
 function Init(){
     try{
-        LocalData.sync({force: false, alter: { drop: Config.databaseDropAlter }, }).catch(console.error);
-        GlobalData.sync({force: false, alter: { drop: Config.databaseDropAlter }, }).catch(console.error);
-        ServerData.sync({force: false, alter: { drop: Config.databaseDropAlter }, }).catch(console.error);
-        ChannelData.sync({force: false, alter: { drop: Config.databaseDropAlter }, }).catch(console.error);
+        LocalData.sync({force: false, alter: { drop: Config.database.databaseDropAlter }, }).catch(console.error);
+        GlobalData.sync({force: false, alter: { drop: Config.database.databaseDropAlter }, }).catch(console.error);
+        ServerData.sync({force: false, alter: { drop: Config.database.databaseDropAlter }, }).catch(console.error);
+        ChannelData.sync({force: false, alter: { drop: Config.database.databaseDropAlter }, }).catch(console.error);
     }
     catch (error){
         console.error(ANSI.Colors.Tex.Red);
