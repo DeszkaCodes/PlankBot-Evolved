@@ -1,0 +1,19 @@
+{
+    "toplist": {
+        "toplistPageLimit": 10
+    },
+
+    "embed": {
+        "colors": {
+            "default": "#8a7c74",
+            "money": "#c6a801",
+            "error": "#ff0000",
+            "success": "#00c800"
+        }
+    },
+
+    "database":{
+        "databaseAlter": true,
+        "databaseDropAlter": false
+    }
+}
