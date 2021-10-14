@@ -30,12 +30,12 @@ const sequelize = new Sequelize("database", "user", "password", {
 //TABLES
 const LocalData = sequelize.define("LocalData", {
     SERVERID: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING(18),
         primaryKey: true,
         allowNull: false
     },
     ID: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING(18),
         primaryKey: true,
         allowNull: false
     },
@@ -56,7 +56,7 @@ const LocalData = sequelize.define("LocalData", {
 
 const GlobalData = sequelize.define("GlobalData", {
     ID: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING(18),
         primaryKey: true,
         allowNull: false
     },
@@ -72,7 +72,7 @@ const GlobalData = sequelize.define("GlobalData", {
 
 const ServerData = sequelize.define("ServerData", {
     ID: {
-        type: Sequelize.INTEGER(),
+        type: Sequelize.STRING(18),
         primaryKey: true,
         allowNull: false
     },
