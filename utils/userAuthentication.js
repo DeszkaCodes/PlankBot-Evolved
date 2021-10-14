@@ -49,6 +49,4 @@ module.exports = {
     IsOwner,
     GetUser,
     UserFromMention,
-    hasPermission,
-    isGuildOwner
 };
