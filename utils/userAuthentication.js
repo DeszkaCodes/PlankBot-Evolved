@@ -40,6 +40,7 @@ async function GetUser(bot, id){
     try{
         return bot.users.cache.get(id);
     }catch(err){
+        console.error(err)
         return;
     }
 }
