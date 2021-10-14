@@ -12,13 +12,13 @@ async function HandleExp(message){
     //EXP Handling
     try{
         //Try to fetch the user's data or create it
-        const localData = await Database.LocalData.findCreateFind({
+        const [localData, found] = await Database.LocalData.findCreateFind({
             where: { [Op.and]: { SERVERID: message.guildId, ID: message.author.id } },
             defaults: { SERVERID: message.guildId, ID: message.author.id, }
         });
 
         //Increment the exp of the user by a random amount
-        const affectedRows = await Database.LocalData.increment(
+        const [affectedRows, count] = await Database.LocalData.increment(
             { EXP:  +Random.RandomInt(expConstraints.min, expConstraints.max) },
             { where: { [Op.and]: { SERVERID: message.guildId, ID: message.author.id } } }
         );
@@ -40,8 +40,7 @@ async function GetPrefix(message){
 
     prefixes = ["!pb "]
     
-    if(serverData.PREMIUM)
-        if(serverData.PREFIX != undefined) prefixes.push(serverData.PREFIX + " ");
+    if(serverData.PREFIX != undefined) prefixes.push(serverData.PREFIX + " ");
 
     return prefixes;
 };
