@@ -32,6 +32,8 @@ async function UserFromMention(bot, mention){
     // The first element in the matches array will be the entire mention, not just the ID,
     // so use index 1.
     const id = matches[1];
+
+    return GetUser(bot, id);
 }
 
 async function GetUser(bot, id){
