@@ -1,0 +1,10 @@
+----TODO----
+
+1.Create embeds for all replies
+    toplist
+    memberAdd/Remove
+    lvl up
+
+2. Send tutorial to guild authors
+
+3. Implement lvl up message
