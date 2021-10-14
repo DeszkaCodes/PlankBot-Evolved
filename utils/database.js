@@ -1,11 +1,12 @@
 const Sequelize = require("sequelize");
 const Settings = require("../utils/settings");
 const fs = require("fs");
+const ANSI = require("../utils/ansi");
 
 //Connection
 if(!fs.existsSync("./data/database/db.sqlite")){
 
-    console.log("Database file does not exist");
+    console.log(`${ANSI.Colors.Text.Red}Database file does not exist`);
 
     fs.writeFile("./data/database/db.sqlite", "", function (err) {
         if (err){
@@ -13,7 +14,7 @@ if(!fs.existsSync("./data/database/db.sqlite")){
             console.error(err.message);
             throw err;
         }else
-            console.log("Database successfully created");
+            console.log(`${ANSI.Colors.Text.Green}Database successfully created${ANSI.Colors.Text.White}`);
     });
 }
 
@@ -69,7 +70,7 @@ const GlobalData = sequelize.define("GlobalData", {
     timestamps: false
 });
 
-const ServerData =sequelize.define("ServerData", {
+const ServerData = sequelize.define("ServerData", {
     ID: {
         type: Sequelize.INTEGER(),
         primaryKey: true,
@@ -92,6 +93,7 @@ const ServerData =sequelize.define("ServerData", {
 { 
     timestamps: false
 });
+
 
 
 //FUNCTIONS
