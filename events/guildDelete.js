@@ -9,5 +9,8 @@ module.exports = {
             where: { [Op.and]: { ID: guild.id, PREMIUM: false } }
         });
 
+        const channelData = await Database.ServerData.destroy({
+            where: { ID: guild.id }
+        });
     }
 };

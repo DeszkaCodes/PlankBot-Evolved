@@ -85,8 +85,24 @@ const ServerData = sequelize.define("ServerData", {
         type: Sequelize.STRING(10),
         allowNull: true,
     },
+    LEVELING: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    },
+},
+{ 
+    timestamps: false
+});
+
+const ChannelData = sequelize.define("ChannelData", {
+    ID: {
+        type: Sequelize.STRING(18),
+        primaryKey: true,
+        allowNull: false
+    },
     MEMBERCHANNEL: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING(18),
         allowNull: true
     }
 },
@@ -95,13 +111,13 @@ const ServerData = sequelize.define("ServerData", {
 });
 
 
-
 //FUNCTIONS
 function Init(){
     try{
         LocalData.sync({force: false });
         GlobalData.sync({force: false });
         ServerData.sync({force: false });
+        ChannelData.sync({force: false });
     }
     catch (error){
         console.error(error.name());
@@ -112,4 +128,4 @@ function Init(){
 
 
 //EXPORTS
-module.exports = { Init, LocalData, GlobalData, ServerData };
+module.exports = { Init, LocalData, GlobalData, ServerData, ChannelData };

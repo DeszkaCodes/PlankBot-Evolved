@@ -9,5 +9,9 @@ module.exports = {
             defaults: { ID: guild.id }
         });
 
+        const channelData = await Database.ServerData.findCreateFind({
+            where: { ID: guild.id }
+        });
+
     }
 };

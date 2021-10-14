@@ -6,9 +6,8 @@ module.exports = {
     name: "guildMemberRemove",
     async execute(bot, member){
 
-        const [serverData, created] = await Database.ServerData.findCreateFind({
+        const [channelData, created] = await Database.ChannelData.findCreateFind({
             where: { ID: member.guild.id },
-            defaults: { ID: member.guild.id },
         });
 
         const localData = Database.LocalData.destroy({
@@ -17,8 +16,8 @@ module.exports = {
 
         let channel = null;
 
-        if(serverData.MEMBERCHANNEL != undefined){
-            channel = await ChannelManager.fetch(serverData.MEMBERCHANNEL);
+        if(channelData.MEMBERCHANNEL != undefined){
+            channel = await ChannelManager.fetch(channelData.MEMBERCHANNEL);
         }
         else if(member.guild.systemChannel){
             channel = member.guild.systemChannel;
