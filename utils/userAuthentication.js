@@ -56,5 +56,7 @@ async function hasPermission(member, permission){
 module.exports = {
     IsOwner,
     GetUser,
-    UserFromMention
+    UserFromMention,
+    hasPermission,
+    isGuildOwner
 };
