@@ -8,10 +8,10 @@ module.exports = {
 
         value = args.shift().toString().toLowerCase();
 
-        option = value == "igaz" ? true : value == "hamis" ? false : undefined;
+        option = value == "be" ? true : value == "ki" ? false : undefined;
 
         if(option == undefined) {
-            await message.reply("A megadott érték csak \"igaz\" vagy \"hamis\" lehet.");
+            await message.reply("A megadott érték csak \"be\" vagy \"ki\" lehet.");
             return;
         }
 
@@ -21,7 +21,7 @@ module.exports = {
         );
 
         if(affectedRows.length > 0)
-            await message.reply(`Szintlépés sikeresen átállítva ${option ? "igaz" : "hamis"} értékre`);
+            await message.reply(`Szintlépés sikeresen ${option ? "bekapcsolva" : "kikapcsolva"}.`);
         else
             await message.reply("Szintlépés nem lett átállítva.");
 
