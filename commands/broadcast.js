@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
-const { IsOwner } = require("../utils/userAuthentication")
+const { IsOwner } = require("../utils/userAuthentication");
+const { errorEmbed } = require("../utils/embed")
 
 module.exports = {
     name: "broadcast",
@@ -8,7 +9,14 @@ module.exports = {
         text = text.join(" ");
 
         if(!IsOwner(bot, message.author)){
-            await message.reply("Nincs jogod végre hajtani ezt a parancsot");
+
+            const embed = errorEmbed(
+                bot,
+                "Nincs jogod végrehajtani ezt a parancsot.",
+                [ {name: "Indok", value: "Nem tartozol a bot tulajai közé."} ]
+            );
+
+            await message.reply({embeds: [embed]});
             return;
         }
 
