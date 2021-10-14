@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const { IsOwner } = require("../utils/userAuthentication")
 
 module.exports = {
     name: "broadcast",
@@ -6,11 +7,8 @@ module.exports = {
 
         text = text.join(" ");
 
-        const application = await bot.application.fetch();
-        const ownerTeam = application.owner;
-
-        if(!ownerTeam.members.has(message.author.id)){
-            await message.reply("Nincs jogod végrehajtani ezt a parancsot.")
+        if(!IsOwner(bot, message.author)){
+            await message.reply("Nincs jogod végre hajtani ezt a parancsot");
             return;
         }
 
