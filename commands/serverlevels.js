@@ -1,5 +1,7 @@
 const Database = require("../utils/database");
-const { Permissions } = require("discord.js")
+const { Permissions, MessageEmbed } = require("discord.js");
+const { errorEmbed } = require("../utils/embed");
+const Config = require("../data/config.json")
 
 module.exports = {
     name: "szintlépés",
@@ -11,7 +13,14 @@ module.exports = {
         option = value == "be" ? true : value == "ki" ? false : undefined;
 
         if(option == undefined) {
-            await message.reply("A megadott érték csak \"be\" vagy \"ki\" lehet.");
+
+            const embed = errorEmbed(
+                bot,
+                "A megadott érték csak \"be\" vagy \"ki\" kapcsolás lehet",
+                [ {name: "Beírt érték", value: value} ]
+            )
+
+            await message.reply({embeds: [embed]});
             return;
         }
 
@@ -20,10 +29,24 @@ module.exports = {
             { where: { ID: message.guildId } }
         );
 
-        if(affectedRows.length > 0)
-            await message.reply(`Szintlépés sikeresen ${option ? "bekapcsolva" : "kikapcsolva"}.`);
-        else
-            await message.reply("Szintlépés nem lett átállítva.");
+        if(affectedRows.length > 0){
+
+            const embed = new MessageEmbed()
+                .setTitle(`Szintlépés sikeresen ${option ? "bekapcsolva" : "kikapcsolva"}`)
+                .setAuthor(bot.user?.username, bot.user?.avatarURL(), Config.embed.inviteLink)
+                .setColor(Config.embed.colors.success)
+                .setDescription(`Mostantól a tagok ${option ? "szinteket léphetnek" : "nem léphetnek szinteket"}.`)
+                .setTimestamp();
+
+            await message.reply({embeds: [embed]});
+        }
+        else{
+            const embed = errorEmbed(bot,
+                "A szintlépést nem tudtuk átállítani."
+            );
+
+            await message.reply({embeds: [embed]});
+        }
 
     }
 };
