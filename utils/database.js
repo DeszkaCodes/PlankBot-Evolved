@@ -2,6 +2,7 @@ const Sequelize = require("sequelize");
 const Settings = require("../utils/settings");
 const fs = require("fs");
 const ANSI = require("../utils/ansi");
+const Config = require("../data/config.json");
 
 //Connection
 if(!fs.existsSync("./data/database/db.sqlite")){
@@ -114,15 +115,19 @@ const ChannelData = sequelize.define("ChannelData", {
 //FUNCTIONS
 function Init(){
     try{
-        LocalData.sync({force: false });
-        GlobalData.sync({force: false });
-        ServerData.sync({force: false });
-        ChannelData.sync({force: false });
+        LocalData.sync({force: false, alter: { drop: Config.databaseDropAlter }, }).catch(console.error);
+        GlobalData.sync({force: false, alter: { drop: Config.databaseDropAlter }, }).catch(console.error);
+        ServerData.sync({force: false, alter: { drop: Config.databaseDropAlter }, }).catch(console.error);
+        ChannelData.sync({force: false, alter: { drop: Config.databaseDropAlter }, }).catch(console.error);
     }
     catch (error){
+        console.error(ANSI.Colors.Tex.Red);
+
         console.error(error.name());
         console.error(error.message());
         console.error(error.stack());
+
+        console.error(ANSI.Colors.Tex.White);
     }
 };
 
