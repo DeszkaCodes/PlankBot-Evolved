@@ -21,7 +21,7 @@ module.exports = {
 
             const embed = new Discord.MessageEmbed()
                 .setTitle("FONTOS ÜZENET")
-                .setAuthor(bot.user?.username, inviteLink, bot.user?.displayAvatarURL())
+                .setAuthor(bot.user?.username, bot.user?.avatarURL(), inviteLink)
                 .setColor("#e00000")
                 .setDescription(text)
                 .setTimestamp();
