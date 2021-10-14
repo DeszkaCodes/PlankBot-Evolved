@@ -2,7 +2,7 @@
  * Place for all the functions that are connected to user objects
 */
 
-const { ClientApplication, User, MessageMentions: { USERS_PATTERN } } = require("discord.js");
+const { ClientApplication, User, MessageMentions: { USERS_PATTERN }, Permissions } = require("discord.js");
 
 async function IsOwner(bot, user){
 
@@ -43,6 +43,14 @@ async function GetUser(bot, id){
         console.error(err)
         return;
     }
+}
+
+async function isGuildOwner(guild, user){
+    return guild.ownerID == user.id;
+}
+
+async function hasPermission(member, permission){
+    return member.permissions.has(permission)
 }
 
 module.exports = {
