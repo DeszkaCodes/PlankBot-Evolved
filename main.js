@@ -11,7 +11,7 @@ const bot = new Client( {intents: intents} );
 
 
 //Load events
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith(".js"));
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith(".js") || file.endsWith(".ts"));
 
 for (const file of eventFiles){
     const event = require("./events/" + file);
@@ -26,7 +26,7 @@ for (const file of eventFiles){
 //Load commands
 bot.commands = new Discord.Collection();
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith(".js"));
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith(".js") || file.endsWith(".ts"));
 
 for (const file of commandFiles){
     const command = require("./commands/" + file);
