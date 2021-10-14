@@ -2,6 +2,7 @@ const Database = require("../utils/database");
 const { Op }= require("sequelize");
 const Random = require("../utils/betterRandom");
 const { StartsWithStringArray } = require("../utils/stringFunctions");
+const { ExpToLevel } = require("../utils/calculations");
 
 const expConstraints = {
     min: 10,
@@ -23,7 +24,7 @@ async function HandleExp(message){
             { where: { [Op.and]: { SERVERID: message.guildId, ID: message.author.id } } }
         );
 
-        return affectedRows.EXP;
+        return { newExp: affectedRows.EXP, oldExp: localData.EXP };
 
     }catch(error){
         console.error(error.name);
@@ -45,6 +46,26 @@ async function GetPrefix(message){
     return prefixes;
 };
 
+async function LevelHandling(bot, message){
+    const [serverData, found] = await Database.ServerData.findCreateFind({
+        attributes: [ "LEVELING" ],
+        where: { ID: message.guildId }
+    });
+
+    if(!serverData.LEVELING) return;
+
+    const exp = await HandleExp(message);
+
+    const oldLvl = ExpToLevel(exp.oldExp);
+    const newLvl = ExpToLevel(exp.newExp);
+
+    // TODO: channel edit 
+    if(oldLvl < newLvl){
+        await message.reply("Új szint");
+    }
+}
+
+
 module.exports = {
     name: "messageCreate",
     async execute(bot, message) {
@@ -53,10 +74,12 @@ module.exports = {
 
         const PREFIX = await GetPrefix(message);
 
-        await HandleExp(message);
+
+        await LevelHandling(bot, message);
 
 
         if(!(StartsWithStringArray(message.content, PREFIX) || message.content.startsWith(`<@!${bot.user.id}>`))) return;
+
 
         const args = message.content.trim().split(/ +/).slice(1);
 	    const command = args.shift().toLowerCase();
