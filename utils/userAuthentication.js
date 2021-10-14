@@ -45,14 +45,6 @@ async function GetUser(bot, id){
     }
 }
 
-async function isGuildOwner(guild, user){
-    return guild.ownerID == user.id;
-}
-
-async function hasPermission(member, permission){
-    return member.permissions.has(permission)
-}
-
 module.exports = {
     IsOwner,
     GetUser,
