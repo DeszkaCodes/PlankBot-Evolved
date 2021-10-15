@@ -3,6 +3,7 @@ const { Op }= require("sequelize");
 const Random = require("../utils/betterRandom");
 const { StartsWithStringArray } = require("../utils/stringFunctions");
 const { ExpToLevel } = require("../utils/calculations");
+const { MessageEmbed } = require("discord.js");
 
 const expConstraints = {
     min: 10,
@@ -61,7 +62,24 @@ async function LevelHandling(bot, message){
 
     // TODO: channel edit 
     if(oldLvl < newLvl){
-        await message.reply("Új szint");
+
+        const embed = new MessageEmbed()
+            .setTitle("Szintlépés")
+            .setAuthor(message.guild.name, message.guild.iconURL())
+            .setDescription(`${message.member?.nickname} elérte a következő szintet.`)
+            .addField(
+                `Eddigi szint`,
+                `${oldLvl}`,
+                true
+            )
+            .addField(
+                `Új szint`,
+                `${newLvl}`,
+                true
+            )
+            .setTimestamp();
+
+        await message.reply({embeds: [embed]});
     }
 }
 
