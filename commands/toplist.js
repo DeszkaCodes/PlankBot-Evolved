@@ -28,8 +28,6 @@ module.exports = {
 
         const offset = page * Config.toplist.toplistPageLimit;
 
-        console.log(page)
-
         const { found, rows } = await Database.LocalData.findAndCountAll({
             attributes: { exclude: ["SERVERID", "BALANCE"] },
             where: { SERVERID: message.guild.id },
