@@ -12,5 +12,10 @@ module.exports = {
         const channelData = await Database.ServerData.destroy({
             where: { ID: guild.id }
         });
+
+        const owner = await guild.fetchOwner();
+
+        await owner.send("tutorial");
+
     }
 };

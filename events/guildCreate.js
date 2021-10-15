@@ -13,5 +13,9 @@ module.exports = {
             where: { ID: guild.id }
         });
 
+        const owner = await guild.fetchOwner();
+
+        await owner.send("asd");
+
     }
 };
