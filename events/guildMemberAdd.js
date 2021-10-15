@@ -1,5 +1,6 @@
 const Database = require("../utils/database");
-const { ChannelManager } = require("discord.js");
+const { ChannelManager, MessageEmbed } = require("discord.js");
+const Config = require("../data/config.json")
 
 module.exports = {
     name: "guildMemberAdd",
@@ -26,7 +27,18 @@ module.exports = {
             return;
         }
 
-        await channel.send(`Új tag csatlakozott! Üdvözlünk ${member}.`)
+        const embed = new MessageEmbed()
+            .setTitle("Új tag érkezett közénk")
+            .addField(
+                "Új tag neve",
+                member.user?.username
+            )
+            .setAuthor(member.guild.name, member.guild.iconURL())
+            .setColor(Config.embed.colors.default)
+            .setThumbnail(member.user?.avatarURL())
+            .setTimestamp();
+
+        await channel.send({embeds: [embed]})
 
     }
 };
