@@ -4,6 +4,7 @@ const Random = require("../utils/betterRandom");
 const { StartsWithStringArray } = require("../utils/stringFunctions");
 const { ExpToLevel } = require("../utils/calculations");
 const { MessageEmbed } = require("discord.js");
+const Config = require("../data/config.json");
 
 const expConstraints = {
     min: 10,
@@ -19,13 +20,15 @@ async function HandleExp(message){
             defaults: { SERVERID: message.guildId, ID: message.author.id, }
         });
 
+        const addedAmount = Random.RandomInt(expConstraints.min, expConstraints.max);
+
         //Increment the exp of the user by a random amount
-        const [affectedRows, count] = await Database.LocalData.increment(
-            { EXP:  +Random.RandomInt(expConstraints.min, expConstraints.max) },
+        const affectedRows = await Database.LocalData.increment(
+            { EXP:  +addedAmount },
             { where: { [Op.and]: { SERVERID: message.guildId, ID: message.author.id } } }
         );
 
-        return { newExp: affectedRows.EXP, oldExp: localData.EXP };
+        return { newExp: localData.EXP + addedAmount, oldExp: localData.EXP };
 
     }catch(error){
         console.error(error.name);
@@ -60,16 +63,18 @@ async function LevelHandling(bot, message){
     const oldLvl = ExpToLevel(exp.oldExp);
     const newLvl = ExpToLevel(exp.newExp);
 
+
     // TODO: channel edit 
     if(oldLvl < newLvl){
+
 
         const embed = new MessageEmbed()
             .setTitle("Szintlépés")
             .setAuthor(message.guild.name, message.guild.iconURL())
-            .setDescription(`${message.member?.nickname} elérte a következő szintet.`)
+            .setDescription(`${message.member?.nickname ?? message.author.username} elérte a következő szintet.`)
             .addField(
                 `Eddigi szint`,
-                `${oldLvl}`,
+                `${oldLvl == 0 ? "Nem ért még el szintet." : oldLvl }`,
                 true
             )
             .addField(
@@ -77,6 +82,7 @@ async function LevelHandling(bot, message){
                 `${newLvl}`,
                 true
             )
+            .setColor(Config.embed.colors.money)
             .setTimestamp();
 
         await message.reply({embeds: [embed]});
