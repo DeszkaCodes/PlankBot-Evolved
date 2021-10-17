@@ -1,13 +1,13 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, Permissions } = require("discord.js");
 const Config = require("../data/config.json");
-const { GetInvite } = require("../utils/clientHelper.ts");
+const { GetInvite } = require("./build/clientHelper");
 
 function errorEmbed(bot, errorMessage, fields) {
-    const inviteLink = Config.embed.inviteLink
+    const inviteLink = GetInvite(bot, Permissions.FLAGS.ADMINISTRATOR)
 
     const embed = new MessageEmbed()
         .setTitle("Hiba történt!")
-        .setAuthor(bot.user?.username, bot.user?.avatarURL(), Config.embed.inviteLink)
+        .setAuthor(bot.user?.username, bot.user?.avatarURL(), inviteLink)
         .setColor(Config.embed.colors.error)
         .setDescription(errorMessage)
         .setTimestamp();
@@ -37,5 +37,5 @@ function EmbedBotAuthor(bot){
 
 
 module.exports = {
-    errorEmbed
+    errorEmbed, EmbedBotAuthor
 };

@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
-const { IsOwner } = require("../utils/userAuthentication");
-const { errorEmbed } = require("../utils/embed")
+const { errorEmbed } = require("../utils/embed");
+const { GetInvite, IsOwner } = require("../build/clientHelper.js");
 
 module.exports = {
     name: "broadcast",
@@ -22,7 +22,7 @@ module.exports = {
 
         const o2guilds = await bot.guilds.fetch();
 
-        const inviteLink = "https://discord.com/api/oauth2/authorize?client_id=890537505605181480&permissions=8&scope=bot";
+        const inviteLink = GetInvite(bot, Discord.Permissions.FLAGS.ADMINISTRATOR);
 
         for (const [key, o2guild] of o2guilds){
             const guild = await o2guild.fetch();
