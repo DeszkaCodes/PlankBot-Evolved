@@ -1,6 +1,5 @@
 const { User, Team, ClientApplication } = require("discord.js");
-
-export function GetInvite(bot , flags){
+function GetInvite(bot , flags){
     const invite = bot.generateInvite({
         scopes: ['bot'],
         permissions: flags
@@ -9,7 +8,7 @@ export function GetInvite(bot , flags){
     return invite;
 }
 
-export async function IsOwner(bot, user){
+async function IsOwner(bot, user){
 
     //fetches the bot's owner team
     const application = await bot.application?.fetch();
@@ -28,4 +27,8 @@ export async function IsOwner(bot, user){
     }
         
         return false;
-}
+};
+
+module.exports = {
+    IsOwner, GetInvite
+};

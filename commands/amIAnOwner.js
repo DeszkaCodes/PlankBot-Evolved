@@ -1,4 +1,4 @@
-const { IsOwner } = require("./build/clientHelper");
+const { IsOwner } = require("../utils/clientHelper");
 
 module.exports = {
     name: "amianowner?",
