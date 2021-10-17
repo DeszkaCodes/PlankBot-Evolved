@@ -15,7 +15,7 @@ module.exports = {
 
         const owner = await guild.fetchOwner();
 
-        await owner.send("asd");
+        await owner.send("tutorial");
 
     }
 };
