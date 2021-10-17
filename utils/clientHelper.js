@@ -1,7 +1,7 @@
-import { Client, PermissionResolvable, User, Team, ClientApplication } from "discord.js";
+const { User, Team, ClientApplication } = require("discord.js");
 
-export function GetInvite(bot: Client, flags: Array<PermissionResolvable>) : string{
-    const invite: string = bot.generateInvite({
+export function GetInvite(bot , flags){
+    const invite = bot.generateInvite({
         scopes: ['bot'],
         permissions: flags
     });
@@ -9,13 +9,13 @@ export function GetInvite(bot: Client, flags: Array<PermissionResolvable>) : str
     return invite;
 }
 
-export async function IsOwner(bot: Client, user: User): Promise<boolean>{
+export async function IsOwner(bot, user){
 
     //fetches the bot's owner team
-    const application: (ClientApplication | undefined) = await bot.application?.fetch();
+    const application = await bot.application?.fetch();
 
     if(application instanceof ClientApplication){
-        const owner: (User | Team | null) = application.owner;
+        const owner = application.owner;
         
         if(owner instanceof Team){
             if(owner.members.has(user.id))

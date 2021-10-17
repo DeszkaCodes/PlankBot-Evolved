@@ -1,6 +1,6 @@
 const { MessageEmbed, Permissions } = require("discord.js");
 const Config = require("../data/config.json");
-const { GetInvite } = require("./build/clientHelper");
+const { GetInvite } = require(./build/clientHelper");
 
 function errorEmbed(bot, errorMessage, fields) {
     const inviteLink = GetInvite(bot, Permissions.FLAGS.ADMINISTRATOR)

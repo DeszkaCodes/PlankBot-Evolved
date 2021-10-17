@@ -5,9 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build && node ./main.js",
-    "debug": "npm run build && nodemon ./main.js",
-    "build": "tsc"
+    "start": "node ./main.js",
+    "debug": "nodemon ./main.js"
   },
   "repository": {
     "type": "git",
@@ -25,8 +24,5 @@
     "dotenv": "^10.0.0",
     "sequelize": "^6.7.0",
     "sqlite3": "^5.0.2"
-  },
-  "devDependencies": {
-    "typescript": "^4.4.4"
   }
 }

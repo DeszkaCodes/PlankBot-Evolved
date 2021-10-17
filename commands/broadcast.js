@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const { errorEmbed } = require("../utils/embed");
-const { GetInvite, IsOwner } = require("../build/clientHelper.js");
+const { GetInvite, IsOwner } = require("./build/clientHelper");
 
 module.exports = {
     name: "broadcast",
