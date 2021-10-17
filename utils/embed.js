@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const Config = require("../data/config.json");
+const { GetInvite } = require("../utils/clientHelper.ts");
 
 function errorEmbed(bot, errorMessage, fields) {
     const inviteLink = Config.embed.inviteLink
@@ -20,6 +21,16 @@ function errorEmbed(bot, errorMessage, fields) {
             );
         };
     }catch(error){}
+
+    return embed;
+}
+
+
+function EmbedBotAuthor(bot){
+    const inviteLink = GetInvite(bot, Permissions.FLAGS.ADMINISTRATOR);
+
+    const embed = new MessageEmbed()
+        .setAuthor(bot.user?.username, bot.user?.avatarURL(), inviteLink);
 
     return embed;
 }
