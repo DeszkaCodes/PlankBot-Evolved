@@ -9,9 +9,7 @@
             "money": "#c6a801",
             "error": "#ff0000",
             "success": "#00c800"
-        },
-
-        "inviteLink": "https://discord.com/api/oauth2/authorize?client_id=890537505605181480&permissions=8&scope=bot"
+        }
     },
 
     "database":{
