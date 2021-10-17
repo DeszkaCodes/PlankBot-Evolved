@@ -83,6 +83,7 @@ async function LevelHandling(bot, message){
                 true
             )
             .setColor(Config.embed.colors.money)
+            .setThumbnail(message.author.avatarURL())
             .setTimestamp();
 
         await message.reply({embeds: [embed]});
@@ -93,7 +94,6 @@ async function LevelHandling(bot, message){
 module.exports = {
     name: "messageCreate",
     async execute(bot, message) {
-
         if(message.author.bot) return;
 
         const PREFIX = await GetPrefix(message);
