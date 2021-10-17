@@ -2,6 +2,7 @@ node_modules
 *.ink
 *.sqlite
 *.sqlite-journal
+test*
 /build
 
 #environment variables
