@@ -24,7 +24,12 @@ module.exports = {
         //TODO: error handle if there is no page number
         //TODO: error handle if there are more pages than the limit
 
-        const page = args[0] - 1;
+        if(args[0] == undefined || args[0] <= 0)
+            args[0] = 0;
+        else
+            args[0] = args[0] - 1;
+
+        const page = args[0] > pages ? pages-1 : args[0] ;
 
         const offset = page * Config.toplist.toplistPageLimit;
 
