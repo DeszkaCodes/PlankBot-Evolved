@@ -94,6 +94,7 @@ async function LevelHandling(bot, message){
 module.exports = {
     name: "messageCreate",
     async execute(bot, message) {
+        
         if(message.author.bot) return;
 
         const PREFIX = await GetPrefix(message);
