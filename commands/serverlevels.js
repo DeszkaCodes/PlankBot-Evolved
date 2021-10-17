@@ -33,7 +33,7 @@ module.exports = {
 
             const embed = new MessageEmbed()
                 .setTitle(`Szintlépés sikeresen ${option ? "bekapcsolva" : "kikapcsolva"}`)
-                .setAuthor(bot.user?.username, bot.user?.avatarURL(), Config.embed.inviteLink)
+                .setAuthor(message.guild.name, message.guild.iconURL())
                 .setColor(Config.embed.colors.success)
                 .setDescription(`Mostantól a tagok ${option ? "szinteket léphetnek" : "nem léphetnek szinteket"}.`)
                 .setTimestamp();
