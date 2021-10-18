@@ -1,1 +1,3 @@
 ----TODO----
+
+-munka system (doesn't get data from database)
