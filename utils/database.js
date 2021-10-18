@@ -22,7 +22,7 @@ if(!fs.existsSync("./data/database/db.sqlite")){
 const sequelize = new Sequelize("database", "user", "password", {
     host: 'localhost',
 	dialect: 'sqlite',
-	logging: false,
+	logging: console.log,
     storage: "./data/database/db.sqlite",
     force: false
 });
