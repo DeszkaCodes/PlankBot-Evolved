@@ -8,7 +8,7 @@ module.exports = {
     name: "munka",
     async execute(bot, message, ...args){
 
-        const data = await LocalData.findCreateFind({
+        const [data, found] = await LocalData.findCreateFind({
             where: { [Op.and]: { SERVERID: message.guildId, ID: message.author.id } },
             defaults: { SERVERID: message.guildId, ID: message.author.id }
         });
