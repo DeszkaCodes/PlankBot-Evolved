@@ -1,5 +1,3 @@
-const ms = require("ms");
-
 const Time = {
     //Time values in milliseconds
     second: 1000,
@@ -8,21 +6,31 @@ const Time = {
     day: 86400000,
 }
 
-function FormatMillisec(timeperiod, long = true){
+function FormatMillisec(timeperiod, long = true, capitalized = true) {
 
-    const formatted = ms(timeperiod, { long: long });
+    const days = Math.floor(timeperiod / Time.day);
+    timeperiod -= Time.day * days;
+    const hours = Math.floor(timeperiod / Time.hour);
+    timeperiod -= Time.hour * hours;
+    const minutes = Math.floor(timeperiod / Time.minute);
+    timeperiod -= Time.minute * minutes;
+    const seconds = Math.floor(timeperiod / Time.second);
 
-    const translated = formatted
-        .replace("second", "másodperc")
-        .replace("seconds", "másodperc")
-        .replace("minute", "perc")
-        .replace("minutes", "perc")
-        .replace("hour", "óra")
-        .replace("hours", "óra") 
-        .replace("day", "nap")
-        .replace("days", "nap")
+    let time = "";
 
-    return translated;
+    if(days > 0)
+        time += `${days} nap`;
+    if(hours > 0)
+        time += ` ${hours}:${minutes} óra`
+    else if(minutes > 0)
+        time += ` ${minutes}:${seconds} perc`
+    else if(seconds > 0)
+        time += ` ${seconds} másodperc`
+    else
+        time += capitalized ? "Kevesebb, mint egy másodperc" : "kevesebb, mint egy másodperc"
+
+
+    return time.trim();
 }
 
 module.exports = {
