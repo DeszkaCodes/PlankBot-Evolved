@@ -115,6 +115,7 @@ module.exports = {
             return;
         }
 
+        // TODO: handle cooldown
 
         try{
             bot.commands.get(command).execute(bot, message, args);

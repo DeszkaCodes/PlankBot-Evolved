@@ -22,21 +22,27 @@ if(!fs.existsSync("./data/database/db.sqlite")){
 const sequelize = new Sequelize("database", "user", "password", {
     host: 'localhost',
 	dialect: 'sqlite',
-	logging: console.log,
+	logging: false,
     storage: "./data/database/db.sqlite",
     force: false
 });
 
 
+// CUSTOM TYPES
+const customTypes = {
+    ID: Sequelize.STRING(18)
+}
+
+
 //TABLES
 const LocalData = sequelize.define("LocalData", {
     SERVERID: {
-        type: Sequelize.STRING(18),
+        type: customTypes.ID,
         primaryKey: true,
         allowNull: false
     },
     ID: {
-        type: Sequelize.STRING(18),
+        type: customTypes.ID,
         primaryKey: true,
         allowNull: false
     },
@@ -57,7 +63,7 @@ const LocalData = sequelize.define("LocalData", {
 
 const GlobalData = sequelize.define("GlobalData", {
     ID: {
-        type: Sequelize.STRING(18),
+        type: customTypes.ID,
         primaryKey: true,
         allowNull: false
     },
@@ -73,7 +79,7 @@ const GlobalData = sequelize.define("GlobalData", {
 
 const ServerData = sequelize.define("ServerData", {
     ID: {
-        type: Sequelize.STRING(18),
+        type: customTypes.ID,
         primaryKey: true,
         allowNull: false
     },
@@ -98,12 +104,12 @@ const ServerData = sequelize.define("ServerData", {
 
 const ChannelData = sequelize.define("ChannelData", {
     ID: {
-        type: Sequelize.STRING(18),
+        type: customTypes.ID,
         primaryKey: true,
         allowNull: false
     },
     MEMBERCHANNEL: {
-        type: Sequelize.STRING(18),
+        type: customTypes.ID,
         allowNull: true
     }
 },
@@ -111,26 +117,48 @@ const ChannelData = sequelize.define("ChannelData", {
     timestamps: false
 });
 
+const CommandCooldowns = sequelize.define("CommandCooldowns", {
+    ID: {
+        type: customTypes.ID,
+        primaryKey: true,
+        allowNull: false
+    },
+    SERVERID: {
+        type: customTypes.ID,
+        allowNull: true,
+    },
+    COMMAND: {
+        type: Sequelize.STRING,
+        primaryKey: true,
+        allowNull: false
+    },
+    EXECUTIONTIME: {
+        type: Sequelize.DATE,
+        allowNull: false
+    }
+},
+{
+    timestamps: false
+});
+
+
 
 //FUNCTIONS
 function Init(){
-    try{
-        LocalData.sync({force: false, alter: { drop: Config.database.databaseDropAlter }, }).catch(console.error);
-        GlobalData.sync({force: false, alter: { drop: Config.database.databaseDropAlter }, }).catch(console.error);
-        ServerData.sync({force: false, alter: { drop: Config.database.databaseDropAlter }, }).catch(console.error);
-        ChannelData.sync({force: false, alter: { drop: Config.database.databaseDropAlter }, }).catch(console.error);
-    }
-    catch (error){
-        console.error(ANSI.Colors.Tex.Red);
-
-        console.error(error.name());
-        console.error(error.message());
-        console.error(error.stack());
-
-        console.error(ANSI.Colors.Tex.White);
-    }
+    LocalData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error);
+    GlobalData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error);
+    ServerData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error);
+    ChannelData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error);
+    CommandCooldowns.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error);
 };
 
 
 //EXPORTS
-module.exports = { Init, LocalData, GlobalData, ServerData, ChannelData };
+module.exports = {
+    Init,
+    LocalData,
+    GlobalData,
+    ServerData,
+    ChannelData,
+    CommandCooldowns
+};
