@@ -1,21 +1,21 @@
 const Sequelize = require("sequelize");
 const Settings = require("../utils/settings");
 const fs = require("fs");
-const ANSI = require("../utils/ansi");
 const Config = require("../data/config.json");
+const chalk = require("chalk")
 
 //Connection
 if(!fs.existsSync("./data/database/db.sqlite")){
 
-    console.log(`${ANSI.Colors.Text.Red}Database file does not exist`);
+    console.log(chalk.redBright("Database file does not exist"));
 
     fs.writeFile("./data/database/db.sqlite", "", function (err) {
         if (err){
-            console.error("Data base file could not be written");
-            console.error(err.message);
+            console.error(chalk.redBright("Data base file could not be written"));
+            console.error(chalk.redBright(err.message));
             throw err;
         }else
-            console.log(`${ANSI.Colors.Text.Green}Database successfully created${ANSI.Colors.Text.White}`);
+            console.log(chalk.greenBright("Database successfully created"));
     });
 }
 
@@ -125,14 +125,15 @@ const CommandCooldowns = sequelize.define("CommandCooldowns", {
     },
     SERVERID: {
         type: customTypes.ID,
-        allowNull: true,
+        primaryKey: true,
+        allowNull: false
     },
     COMMAND: {
         type: Sequelize.STRING,
         primaryKey: true,
         allowNull: false
     },
-    EXECUTIONTIME: {
+    ENDTIME: {
         type: Sequelize.DATE,
         allowNull: false
     }
@@ -144,12 +145,14 @@ const CommandCooldowns = sequelize.define("CommandCooldowns", {
 
 
 //FUNCTIONS
-function Init(){
-    LocalData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error);
-    GlobalData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error);
-    ServerData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error);
-    ChannelData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error);
-    CommandCooldowns.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error);
+async function Init(){
+    await Promise.all([
+        LocalData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
+        GlobalData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
+        ServerData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
+        ChannelData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
+        CommandCooldowns.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error)
+    ]);
 };
 
 
