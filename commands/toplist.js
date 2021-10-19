@@ -14,6 +14,7 @@ async function ValidateUser(bot, row){
 
 module.exports = {
     name: "toplista",
+    cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
     async execute(bot, message, args){
         const count = await Database.LocalData.count({
             where: { SERVERID: message.guild.id }

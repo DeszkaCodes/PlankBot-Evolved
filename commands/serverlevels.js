@@ -5,6 +5,7 @@ const Config = require("../data/config.json")
 
 module.exports = {
     name: "szintlépés",
+    cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
     async execute(bot, message, ...args) {
         if(!message.member.permissions?.has(Permissions.FLAGS.ADMINISTRATOR)) return;
 

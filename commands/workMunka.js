@@ -6,6 +6,7 @@ const Config = require("../data/config.json")
 
 module.exports = {
     name: "munka",
+    cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
     async execute(bot, message, ...args){
 
         const [data, found] = await LocalData.findCreateFind({

@@ -20,6 +20,7 @@ async function inputTests(bot, message, text){
 
 module.exports = {
     name: "prefix",
+    cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
     async execute(bot, message, ...args){
         if(!message.member.permissions?.has(Permissions.FLAGS.ADMINISTRATOR)){
 

@@ -4,6 +4,7 @@ const { GetInvite, IsOwner } = require("../utils/clientHelper");
 
 module.exports = {
     name: "broadcast",
+    cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
     async execute(bot, message, text){
 
         text = text.join(" ");

@@ -2,6 +2,7 @@ const { IsOwner } = require("../utils/clientHelper");
 
 module.exports = {
     name: "amianowner?",
+    cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
     async execute(bot, message, ...args){
         const isOwner = await IsOwner(bot, message.author);
 
