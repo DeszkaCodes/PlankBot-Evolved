@@ -23,11 +23,6 @@ module.exports = {
 
         if(affectedRows <= 0) return;
 
-        console.log(payment)
-        console.log(data.BALANCE)
-        console.log(typeof payment)
-        console.log(typeof data.BALANCE)
-
         const embed = new MessageEmbed()
             .setTitle("Szorgos dolgozó")
             .setAuthor(message.guild.name, message.guild.iconURL())
