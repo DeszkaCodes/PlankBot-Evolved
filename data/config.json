@@ -17,6 +17,14 @@
         "databaseDropAlter": false
     },
     "intervals":{
-        "cooldownTrim": 3600000
+        "cooldownTrim": 3600000,
+        "changePresence": 5000
+    },
+    "botUser":{
+        "activity": [
+            {"name": "Bot aktív", "type": "PLAYING"},
+            {"name": "!pb segítség", "type": "LISTENING"},
+            {"name": "for commands", "type": "WATCHING"}
+        ]
     }
 }
