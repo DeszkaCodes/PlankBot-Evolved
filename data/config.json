@@ -15,5 +15,8 @@
     "database":{
         "databaseAlter": true,
         "databaseDropAlter": false
+    },
+    "intervals":{
+        "cooldownTrim": 3600000
     }
 }
