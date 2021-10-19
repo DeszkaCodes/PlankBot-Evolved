@@ -1,3 +1,5 @@
 ----TODO----
 
 -handle cooldown system in messageCreate.js
+-translate cooldown time
+-messageCreate error embeds

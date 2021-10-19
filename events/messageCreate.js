@@ -5,6 +5,7 @@ const { StartsWithStringArray } = require("../utils/stringFunctions");
 const { ExpToLevel } = require("../utils/calculations");
 const { MessageEmbed } = require("discord.js");
 const Config = require("../data/config.json");
+const { FormatMillisec } = require("../utils/time");
 
 const expConstraints = {
     min: 10,
@@ -90,6 +91,40 @@ async function LevelHandling(bot, message){
     }
 }
 
+async function HandleCooldown(bot, message, command){
+
+    const cooldownInfo = bot.commands.get(command).cooldown;
+
+    if(!cooldownInfo.IsOn) return {IsOn: false, Time: null};
+
+    const result = await Database.CommandCooldowns.findOne({
+        where: { [Op.and]: { ID: message.author.id, COMMAND: command, SERVERID: message.guildId } }
+    });
+    
+    if(!result){
+        Database.CommandCooldowns.create({
+            ID: message.author.id,
+            SERVERID: message.guildId,
+            COMMAND: command,
+            ENDTIME: new Date(Date.now() + cooldownInfo.Time)
+        })
+        return {IsOn: false, Time: null};
+    }
+
+    if(Date.now() > result.ENDTIME){
+
+        Database.CommandCooldowns.update(
+            { ENDTIME: new Date(Date.now() + cooldownInfo.Time) },
+            { where: { [Op.and]: { ID: message.author.id, COMMAND: command, SERVERID: message.guildId } }
+        });
+
+        return {IsOn: false, Time: null};
+    }
+
+    
+    return {IsOn: true, Time: result.ENDTIME - Date.now() };
+}
+
 
 module.exports = {
     name: "messageCreate",
@@ -116,6 +151,12 @@ module.exports = {
         }
 
         // TODO: handle cooldown
+        const cooldown = await HandleCooldown(bot, message, command)
+        if(cooldown.IsOn){
+            await message.reply(`Ez a parancs még nem használható ${FormatMillisec(cooldown.Time)} ms-ig`)
+            return;
+        }
+
 
         try{
             bot.commands.get(command).execute(bot, message, args);
