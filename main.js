@@ -3,6 +3,7 @@ const { Client, Intents } = require('discord.js');
 const Discord = require('discord.js')
 const { Settings } = require("./utils/settings");
 
+
 // Setting up intents and bot
 const intents = [ 
     Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILDS,
