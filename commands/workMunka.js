@@ -2,11 +2,12 @@ const { MessageEmbed } = require("discord.js");
 const { RandomInt } = require("../utils/betterRandom");
 const { LocalData } = require("../utils/database");
 const { Op } = require("sequelize");
-const Config = require("../data/config.json")
+const Config = require("../data/config.json");
+const { Time } = require("../utils/time");
 
 module.exports = {
     name: "munka",
-    cooldown: { IsOn: true, Time: null }, // Time given in milliseconds
+    cooldown: { IsOn: true, Time: Time.minute * 5 }, // Time given in milliseconds
     async execute(bot, message, ...args){
 
         const [data, found] = await LocalData.findCreateFind({
