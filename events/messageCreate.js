@@ -4,6 +4,7 @@ const Random = require("../utils/betterRandom");
 const { StartsWithStringArray } = require("../utils/stringFunctions");
 const { ExpToLevel } = require("../utils/calculations");
 const { MessageEmbed } = require("discord.js");
+const { errorEmbed } = require("../utils/embed");
 const Config = require("../data/config.json");
 const { FormatMillisec } = require("../utils/time");
 
@@ -146,14 +147,26 @@ module.exports = {
 
 
         if(!bot.commands.has(command)){
-            await message.reply("Ez a parancs nem létezik.");
+            const embed = errorEmbed(
+                bot, "A megadott parancs nem létezik.",
+                [{name: "Megadott parancs", value: command}]
+            )
+
+            await message.reply({embeds: [embed]});
+
             return;
         }
 
         // TODO: handle cooldown
         const cooldown = await HandleCooldown(bot, message, command)
         if(cooldown.IsOn){
-            await message.reply(`Ez a parancs még nem használható ${FormatMillisec(cooldown.Time)} ms-ig`)
+            const embed = errorEmbed(
+                bot, "Ezt a parancsot még nem tudod használni egy ideig.",
+                [{name:"Következőnek használható", value: `${FormatMillisec(cooldown.Time)} múlva`}]
+            )
+
+            await message.reply({embeds: [embed]});
+
             return;
         }
 
@@ -164,6 +177,14 @@ module.exports = {
             console.error(err.name);
             console.error(err.message);
             console.error(err.stack);
+
+            const embed = errorEmbed(
+                bot, "Egy kezeletlen hiba történt.",
+                [
+                    {name:"Hiba neve:", value: err.name.toString()},
+                    {name:"Hiba Üzenete:", value: err.message.toString()},
+                ]
+            )
 
             await message.reply("Hiba történt.")
         }
