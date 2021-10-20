@@ -1,5 +1,8 @@
 ----TODO----
 
--handle cooldown system in messageCreate.js
--translate cooldown time
--messageCreate error embeds
+-global exp system
+-stealing system v0.1
+-roulette system
+-shop system
+-local card system
+-global card system
