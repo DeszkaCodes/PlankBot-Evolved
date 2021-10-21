@@ -1,6 +1,5 @@
 ----TODO----
 
--global exp system
 -stealing system v0.1
 -roulette system
 -shop system
