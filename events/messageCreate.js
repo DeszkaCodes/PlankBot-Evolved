@@ -13,31 +13,75 @@ const expConstraints = {
     max: 15
 };
 
-async function HandleExp(message){
-    //EXP Handling
-    try{
-        //Try to fetch the user's data or create it
-        const [localData, found] = await Database.LocalData.findCreateFind({
-            where: { [Op.and]: { SERVERID: message.guildId, ID: message.author.id } },
-            defaults: { SERVERID: message.guildId, ID: message.author.id, }
-        });
+class LocalExp{
+        static async HandleExp(message){
+            //EXP Handling
+            try{
+                //Try to fetch the user's data or create it
+                const [localData, found] = await Database.LocalData.findCreateFind({
+                    where: { [Op.and]: { SERVERID: message.guildId, ID: message.author.id } },
+                    defaults: { SERVERID: message.guildId, ID: message.author.id, }
+                });
+        
+                const addedAmount = Random.RandomInt(expConstraints.min, expConstraints.max);
+        
+                //Increment the exp of the user by a random amount
+                const affectedRows = await Database.LocalData.increment(
+                    { EXP:  +addedAmount },
+                    { where: { [Op.and]: { SERVERID: message.guildId, ID: message.author.id } } }
+                );
+        
+                return { newExp: localData.EXP + addedAmount, oldExp: localData.EXP };
+        
+            }catch(error){
+                console.error(error.name);
+                console.error(error.message);
+                console.error(error.stack);
+            }
+        };
 
-        const addedAmount = Random.RandomInt(expConstraints.min, expConstraints.max);
-
-        //Increment the exp of the user by a random amount
-        const affectedRows = await Database.LocalData.increment(
-            { EXP:  +addedAmount },
-            { where: { [Op.and]: { SERVERID: message.guildId, ID: message.author.id } } }
-        );
-
-        return { newExp: localData.EXP + addedAmount, oldExp: localData.EXP };
-
-    }catch(error){
-        console.error(error.name);
-        console.error(error.message);
-        console.error(error.stack);
-    }
+        static async LevelHandling(bot, message){
+            const [serverData, found] = await Database.ServerData.findCreateFind({
+                attributes: [ "LEVELING" ],
+                where: { ID: message.guildId }
+            });
+        
+            if(!serverData.LEVELING) return;
+        
+            const exp = await this.HandleExp(message);
+        
+            const oldLvl = ExpToLevel(exp.oldExp);
+            const newLvl = ExpToLevel(exp.newExp);
+        
+        
+            // TODO: channel edit 
+            if(oldLvl < newLvl){
+        
+        
+                const embed = new MessageEmbed()
+                    .setTitle("Szintlépés")
+                    .setAuthor(message.guild.name, message.guild.iconURL())
+                    .setDescription(`${message.member?.nickname ?? message.author.username} elérte a következő szintet.`)
+                    .addField(
+                        `Eddigi szint`,
+                        `${oldLvl == 0 ? "Nem ért még el szintet." : oldLvl }`,
+                        true
+                    )
+                    .addField(
+                        `Új szint`,
+                        `${newLvl}`,
+                        true
+                    )
+                    .setColor(Config.embed.colors.money)
+                    .setThumbnail(message.author.avatarURL())
+                    .setTimestamp();
+        
+                await message.reply({embeds: [embed]});
+            }
+        };
 };
+
+
 
 async function GetPrefix(message){
     const [serverData, created] = await Database.ServerData.findCreateFind({
@@ -52,45 +96,7 @@ async function GetPrefix(message){
     return prefixes;
 };
 
-async function LevelHandling(bot, message){
-    const [serverData, found] = await Database.ServerData.findCreateFind({
-        attributes: [ "LEVELING" ],
-        where: { ID: message.guildId }
-    });
 
-    if(!serverData.LEVELING) return;
-
-    const exp = await HandleExp(message);
-
-    const oldLvl = ExpToLevel(exp.oldExp);
-    const newLvl = ExpToLevel(exp.newExp);
-
-
-    // TODO: channel edit 
-    if(oldLvl < newLvl){
-
-
-        const embed = new MessageEmbed()
-            .setTitle("Szintlépés")
-            .setAuthor(message.guild.name, message.guild.iconURL())
-            .setDescription(`${message.member?.nickname ?? message.author.username} elérte a következő szintet.`)
-            .addField(
-                `Eddigi szint`,
-                `${oldLvl == 0 ? "Nem ért még el szintet." : oldLvl }`,
-                true
-            )
-            .addField(
-                `Új szint`,
-                `${newLvl}`,
-                true
-            )
-            .setColor(Config.embed.colors.money)
-            .setThumbnail(message.author.avatarURL())
-            .setTimestamp();
-
-        await message.reply({embeds: [embed]});
-    }
-}
 
 async function HandleCooldown(bot, message, command){
 
@@ -132,11 +138,10 @@ module.exports = {
     async execute(bot, message) {
         
         if(message.author.bot) return;
+        
+        await LocalExp.LevelHandling(bot, message);
 
         const PREFIX = await GetPrefix(message);
-
-
-        await LevelHandling(bot, message);
 
 
         if(!(StartsWithStringArray(message.content, PREFIX) || message.content.startsWith(`<@!${bot.user.id}>`))) return;
