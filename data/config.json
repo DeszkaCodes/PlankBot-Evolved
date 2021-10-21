@@ -2,7 +2,6 @@
     "toplist": {
         "toplistPageLimit": 5
     },
-
     "embed": {
         "colors": {
             "default": "#8a7c74",
@@ -11,7 +10,6 @@
             "success": "#00c800"
         }
     },
-
     "database":{
         "databaseAlter": true,
         "databaseDropAlter": false
@@ -26,5 +24,15 @@
             {"name": "!pb segítség", "type": "LISTENING"},
             {"name": "for commands", "type": "WATCHING"}
         ]
+    },
+    "EXPConstraints":{
+        "local": {
+            "max": 15,
+            "min": 10
+        },
+        "global": {
+            "max": 10,
+            "min": 5
+        }
     }
 }

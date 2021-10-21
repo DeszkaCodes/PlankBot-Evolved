@@ -8,10 +8,7 @@ const { errorEmbed } = require("../utils/embed");
 const Config = require("../data/config.json");
 const { FormatMillisec } = require("../utils/time");
 
-const expConstraints = {
-    min: 10,
-    max: 15
-};
+
 
 class LocalExp{
         static async HandleExp(message){
@@ -23,7 +20,10 @@ class LocalExp{
                     defaults: { SERVERID: message.guildId, ID: message.author.id, }
                 });
         
-                const addedAmount = Random.RandomInt(expConstraints.min, expConstraints.max);
+                const addedAmount = Random.RandomInt(
+                    Config.EXPConstraints.local.min,
+                    Config.EXPConstraints.local.max
+                    );
         
                 //Increment the exp of the user by a random amount
                 const affectedRows = await Database.LocalData.increment(
@@ -168,18 +168,21 @@ module.exports = {
         
         if(message.author.bot) return;
         
+
         await LocalExp.LevelHandling(bot, message);
+
 
         const PREFIX = await GetPrefix(message);
 
-
+        
+        //checks if the message starts with the correct prefix
         if(!(StartsWithStringArray(message.content, PREFIX) || message.content.startsWith(`<@!${bot.user.id}>`))) return;
 
 
         const args = message.content.trim().split(/ +/).slice(1);
 	    const command = args.shift().toLowerCase();
 
-
+        //checks if the command exist
         if(!bot.commands.has(command)){
             const embed = errorEmbed(
                 bot, "A megadott parancs nem létezik.",
@@ -191,7 +194,7 @@ module.exports = {
             return;
         }
 
-        // TODO: handle cooldown
+        // checks if the command is on cooldown
         const cooldown = await HandleCooldown(bot, message, command)
         if(cooldown.IsOn){
             const embed = errorEmbed(
@@ -204,7 +207,7 @@ module.exports = {
             return;
         }
 
-
+        //executes the command
         try{
             bot.commands.get(command).execute(bot, message, args);
 
@@ -223,8 +226,6 @@ module.exports = {
                     {name:"Hiba Üzenete:", value: err.message.toString()},
                 ]
             )
-
-            await message.reply("Hiba történt.")
         }
     }
 };
