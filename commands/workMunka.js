@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { RandomInt } = require("../utils/betterRandom");
+const { RandomInt } = require("../utils/random");
 const { LocalData } = require("../utils/database");
 const { Op } = require("sequelize");
 const Config = require("../data/config.json");
