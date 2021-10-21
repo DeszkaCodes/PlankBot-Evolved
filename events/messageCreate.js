@@ -1,6 +1,6 @@
 const Database = require("../utils/database");
 const { Op }= require("sequelize");
-const Random = require("../utils/betterRandom");
+const Random = require("../utils/random");
 const { StartsWithStringArray } = require("../utils/stringFunctions");
 const { ExpToLevel } = require("../utils/calculations");
 const { MessageEmbed } = require("discord.js");
