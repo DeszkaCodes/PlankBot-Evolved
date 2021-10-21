@@ -81,7 +81,36 @@ class LocalExp{
         };
 };
 
-
+class GlobalExp{
+    static async HandleExp(message){
+        //EXP Handling
+        try{
+            //Try to fetch the user's data or create it
+            const [localData, found] = await Database.GlobalData.findCreateFind({
+                where: { ID: message.author.id },
+                defaults: { ID: message.author.id }
+            });
+    
+            const addedAmount = Random.RandomInt(
+                    Config.EXPConstraints.global.min,
+                    Config.EXPConstraints.global.max
+                );
+    
+            //Increment the exp of the user by a random amount
+            const affectedRows = await Database.GlobalData.increment(
+                { EXP:  +addedAmount },
+                { where: { ID: message.author.id } }
+            );
+    
+            return { newExp: localData.EXP + addedAmount, oldExp: localData.EXP };
+    
+        }catch(error){
+            console.error(error.name);
+            console.error(error.message);
+            console.error(error.stack);
+        }
+    };
+}
 
 async function GetPrefix(message){
     const [serverData, created] = await Database.ServerData.findCreateFind({
@@ -178,6 +207,10 @@ module.exports = {
 
         try{
             bot.commands.get(command).execute(bot, message, args);
+
+            //if the command was successfully execute add EXP
+            GlobalExp.HandleExp(message);
+
         }catch(err){
             console.error(err.name);
             console.error(err.message);
