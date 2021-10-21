@@ -1,7 +1,6 @@
 ----TODO----
 
--stealing system v0.1
+-shop system v0.5
 -roulette system
--shop system
 -local card system
 -global card system
