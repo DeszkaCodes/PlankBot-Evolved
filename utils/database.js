@@ -30,7 +30,8 @@ const sequelize = new Sequelize("database", "user", "password", {
 
 // CUSTOM TYPES
 const customTypes = {
-    ID: Sequelize.STRING(18)
+    ID: Sequelize.STRING(18),
+    SHA512: Sequelize.STRING(128)
 }
 
 
@@ -142,6 +143,30 @@ const CommandCooldowns = sequelize.define("CommandCooldowns", {
     timestamps: false
 });
 
+const Shop = sequelize.define("Shop", {
+    SERVERID: {
+        type: customTypes.ID,
+        primaryKey: true,
+        allowNull: false
+    },
+    ID: {
+        type: customTypes.SHA512,
+        primaryKey: true,
+        allowNull: false
+    },
+    ROLEID: {
+        type: customTypes.ID,
+        allowNull: false
+    },
+    PRICE: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    },
+    AMOUNT: {
+        type: Sequelize.INTEGER
+    }
+});
+
 
 
 //FUNCTIONS
@@ -151,7 +176,8 @@ async function Init(){
         GlobalData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
         ServerData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
         ChannelData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
-        CommandCooldowns.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error)
+        CommandCooldowns.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
+        Shop.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error)
     ]);
 };
 
@@ -163,5 +189,6 @@ module.exports = {
     GlobalData,
     ServerData,
     ChannelData,
-    CommandCooldowns
+    CommandCooldowns,
+    Shop
 };
