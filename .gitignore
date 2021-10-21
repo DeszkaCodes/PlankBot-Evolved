@@ -3,6 +3,7 @@ node_modules
 *.sqlite
 *.sqlite-journal
 test*
+.vscode
 /build
 
 #environment variables
