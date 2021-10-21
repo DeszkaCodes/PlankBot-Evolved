@@ -138,12 +138,14 @@ async function HandleCooldown(bot, message, command){
     });
     
     if(!result){
-        Database.CommandCooldowns.create({
-            ID: message.author.id,
-            SERVERID: message.guildId,
-            COMMAND: command,
-            ENDTIME: new Date(Date.now() + cooldownInfo.Time)
-        })
+        if(!Number.isNaN(cooldownInfo.Time)){
+            Database.CommandCooldowns.create({
+                ID: message.author.id,
+                SERVERID: message.guildId,
+                COMMAND: command,
+                ENDTIME: new Date(Date.now() + cooldownInfo.Time)
+            });
+        }
         return {IsOn: false, Time: null};
     }
 
