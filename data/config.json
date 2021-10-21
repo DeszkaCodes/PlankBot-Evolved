@@ -8,7 +8,8 @@
             "money": "#c6a801",
             "error": "#ff0000",
             "success": "#00c800"
-        }
+        },
+        "empty": "\u200B"
     },
     "database":{
         "databaseAlter": true,
@@ -24,6 +25,21 @@
             {"name": "!pb segítség", "type": "LISTENING"},
             {"name": "for commands", "type": "WATCHING"}
         ]
+    },
+    "Jobs":{
+        "Steal":{
+            "failChance": 50,
+            "reward":{
+                "max": 15000,
+                "min": 10000
+            }
+        },
+        "Work":{
+            "reward":{
+                "max": 5000,
+                "min": 2500
+            }
+        }
     },
     "EXPConstraints":{
         "local": {
