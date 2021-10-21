@@ -35,7 +35,7 @@ module.exports = {
             return;
         }
 
-        text = args.join("").trim();
+        text = args.join("").replace(" ", "");
 
         
         //check if the prefix starts with "törlés"
