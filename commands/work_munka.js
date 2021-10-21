@@ -8,6 +8,10 @@ const { Time } = require("../utils/time");
 module.exports = {
     name: "munka",
     cooldown: { IsOn: true, Time: Time.minute * 5 }, // Time given in milliseconds
+    help: {
+        arguments: [],
+        description: "Egy gyors és kockázatmentes pénzszerzési lehetőség."
+    },
     async execute(bot, message, ...args){
 
         const [data, found] = await LocalData.findCreateFind({
