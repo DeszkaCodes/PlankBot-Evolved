@@ -15,7 +15,7 @@ module.exports = {
             defaults: { SERVERID: message.guildId, ID: message.author.id }
         });
 
-        const payment = RandomInt(2500, 5000);
+        const payment = RandomInt(Config.Jobs.Work.reward.min, Config.Jobs.Work.reward.max);
         
         const affectedRows = await LocalData.increment(
             { BALANCE: +payment },
@@ -27,7 +27,7 @@ module.exports = {
         const embed = new MessageEmbed()
             .setTitle("Szorgos dolgozó")
             .setAuthor(message.guild.name, message.guild.iconURL())
-            .setDescription("Munkád után kapod a jutalmad.")
+            .setDescription("Megjött a várva várt fizetésed.")
             .setTimestamp()
             .setColor(Config.embed.colors.money)
             .addFields(
@@ -36,6 +36,7 @@ module.exports = {
                     {name: "Új egyenleged", value: (data.BALANCE + payment).toLocaleString(), inline: true}
                 ]
             )
+            .setFooter("Hogy kipihend magad nem használhatod ezt a parancsot 5 percig.\n")
 
 
         await message.reply({embeds: [embed], ephemeral: true});
