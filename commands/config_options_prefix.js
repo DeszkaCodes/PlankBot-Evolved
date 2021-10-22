@@ -21,6 +21,10 @@ async function inputTests(bot, message, text){
 module.exports = {
     name: "prefix",
     cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
+    help: {
+        arguments: [{name: "prefixum", description: "maximum 10 karakter", optional: false}],
+        description: "Be állítja a szerver egyedi prefixumát."
+    },
     async execute(bot, message, ...args){
         if(!message.member.permissions?.has(Permissions.FLAGS.ADMINISTRATOR)){
 

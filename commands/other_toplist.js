@@ -15,6 +15,10 @@ async function ValidateUser(bot, row){
 module.exports = {
     name: "toplista",
     cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
+    help: {
+        arguments: [{name: "oldal", description: "az nézni kívánt oldal", optional: true}],
+        description: "A szerver tagjai szint toplistája."
+    },
     async execute(bot, message, args){
         const count = await Database.LocalData.count({
             where: { SERVERID: message.guild.id }

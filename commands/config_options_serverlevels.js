@@ -6,6 +6,10 @@ const Config = require("../data/config.json")
 module.exports = {
     name: "szintlépés",
     cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
+    help: {
+        arguments: [{name: "opció", description: "ki/be", optional: false}],
+        description: "Be vagy ki tudod kapcsolni a szintlépéseket a szerveren."
+    },
     async execute(bot, message, ...args) {
         if(!message.member.permissions?.has(Permissions.FLAGS.ADMINISTRATOR)) return;
 

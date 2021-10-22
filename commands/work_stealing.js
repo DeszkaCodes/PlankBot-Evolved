@@ -22,6 +22,10 @@ function DecideSuccess(){
 module.exports = {
     name: "lop",
     cooldown: { IsOn: true, Time: Time.minute * 15 }, // Time given in milliseconds
+    help: {
+        arguments: [],
+        description: "Kockázatos rabolni, de meg van a maga nyereménye."
+    },
     async execute(bot, message, ...args){
         
         //preparation for the command

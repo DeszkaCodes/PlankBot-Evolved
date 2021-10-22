@@ -5,6 +5,10 @@ const { GetInvite, IsOwner } = require("../utils/clientHelper");
 module.exports = {
     name: "broadcast",
     cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
+    help: {
+        arguments: [{name: "üzenet", description: "közvetítendő üzenet", optional: false}],
+        description: "Meghírdet egy közleményt."
+    },
     async execute(bot, message, text){
 
         text = text.join(" ");
