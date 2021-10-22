@@ -118,7 +118,7 @@ async function GetPrefix(message){
         defaults: { ID: message.guildId, PREFIX: null },
     })
 
-    prefixes = ["!pb "]
+    prefixes = [Config.prefix]
     
     if(serverData.PREFIX != undefined) prefixes.push(serverData.PREFIX + " ");
 
