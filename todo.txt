@@ -1,8 +1,7 @@
 ----TODO----
 
--help system
--help system show all commands without arguments
 -shop system v0.5
 -roulette system
 -local card system
 -global card system
+-help system show cooldown time
