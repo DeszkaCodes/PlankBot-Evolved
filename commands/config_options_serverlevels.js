@@ -7,7 +7,7 @@ module.exports = {
     name: "szintlépés",
     cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
     help: {
-        arguments: [{name: "opció", description: "ki/be", optional: false}],
+        arguments: [{name: "opció", description: "csak \"ki\" vagy \"be\" érték lehet", optional: false}],
         description: "Be vagy ki tudod kapcsolni a szintlépéseket a szerveren."
     },
     async execute(bot, message, ...args) {

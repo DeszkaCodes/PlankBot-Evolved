@@ -17,7 +17,7 @@ module.exports = {
     cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
     help: {
         arguments: [{name: "oldal", description: "az nézni kívánt oldal", optional: true}],
-        description: "A szerver tagjai szint toplistája."
+        description: "Kilistázza az összes tag szintjét csökkenő sorrendben."
     },
     async execute(bot, message, args){
         const count = await Database.LocalData.count({
@@ -59,6 +59,11 @@ module.exports = {
 
         for (let row of rows){
 
+            const lvl = ExpToLevel(row.EXP);
+
+            if(lvl <= 0)
+                continue;
+
             const user = await ValidateUser(bot, row);
 
             const name = user.username ? user.username : "Ismeretlen tag";
@@ -70,7 +75,7 @@ module.exports = {
             );
             embed.addField(
                 `Elért szint és tapasztalat`,
-                `${ExpToLevel(row.EXP).toLocaleString()} szint\n${row.EXP.toLocaleString()} XP`,
+                `${lvl.toLocaleString()} szint\n${row.EXP.toLocaleString()} XP`,
                 true
             );
 

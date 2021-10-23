@@ -5,3 +5,4 @@
 -local card system
 -global card system
 -help system show cooldown time
+-command aliases

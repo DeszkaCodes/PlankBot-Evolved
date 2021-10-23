@@ -7,7 +7,7 @@ module.exports = {
     cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
     help: {
         arguments: [{name: "üzenet", description: "közvetítendő üzenet", optional: false}],
-        description: "Meghírdet egy közleményt."
+        description: "Elküldi az üzenetet minden szerver fő szobájába, ahol tag a bot."
     },
     async execute(bot, message, text){
 

@@ -24,7 +24,7 @@ module.exports = {
     cooldown: { IsOn: true, Time: Time.minute * 15 }, // Time given in milliseconds
     help: {
         arguments: [],
-        description: "Kockázatos rabolni, de meg van a maga nyereménye."
+        description: "Egy kockázatos pénzszerzési módszer.\nVigyázz, ha lebuksz nagy az ára!"
     },
     async execute(bot, message, ...args){
         

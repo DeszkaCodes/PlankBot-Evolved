@@ -22,8 +22,14 @@ module.exports = {
     name: "prefix",
     cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
     help: {
-        arguments: [{name: "prefixum", description: "maximum 10 karakter", optional: false}],
-        description: "Be állítja a szerver egyedi prefixumát."
+        arguments: [
+            {
+                name: "prefixum",
+                description: "maximum 10 karakter - ha \"törlés\", akkor törli a mostanit",
+                optional: false
+            }
+        ],
+        description: "A szerver saját prefixumát lehet vele cserélni"
     },
     async execute(bot, message, ...args){
         if(!message.member.permissions?.has(Permissions.FLAGS.ADMINISTRATOR)){

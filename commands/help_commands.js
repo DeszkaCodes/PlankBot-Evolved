@@ -67,7 +67,7 @@ async function NoCommandsGiven(bot, message, args){
     let arguments = "";
 
     for(let command of commands){
-        arguments += `**${command[1].name}**: ${command[1].help.description}\n`;
+        arguments += `**${command[1].name}**: ${command[1].help.description.split("\n")[0]}\n`;
     };
     
 
@@ -86,7 +86,7 @@ module.exports = {
     cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
     help:{
         arguments: [{name: "parancs", description: "a keresett parancs neve", optional: true}],
-        description: "Kiírja az összes parancsot, illetve megmutatja a parancsok paramétereit."
+        description: "Az összes parancs kilistázása\nHa van megadott parancs, akkor annak a részletei."
     },
     async execute(bot, message, args){
         //if no command given exterminate the process
