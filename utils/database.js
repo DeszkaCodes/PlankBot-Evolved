@@ -172,7 +172,7 @@ const Shop = sequelize.define("Shop", {
 //FUNCTIONS
 async function Init(){
     await Promise.all([
-        LocalData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
+        LocalData.sync({force: true, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
         GlobalData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
         ServerData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
         ChannelData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),

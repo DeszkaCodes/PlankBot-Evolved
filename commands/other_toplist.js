@@ -26,9 +26,6 @@ module.exports = {
 
         const pages = Math.ceil(count / Config.toplist.toplistPageLimit);
 
-        //TODO: error handle if there is no page number
-        //TODO: error handle if there are more pages than the limit
-
         if(args[0] == undefined || args[0] <= 0)
             args[0] = 0;
         else

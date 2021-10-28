@@ -3,10 +3,12 @@ const { Op }= require("sequelize");
 const Random = require("../utils/random");
 const { StartsWithStringArray } = require("../utils/stringFunctions");
 const { ExpToLevel } = require("../utils/calculations");
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageAttachment } = require("discord.js");
 const { errorEmbed } = require("../utils/embed");
 const Config = require("../data/config.json");
 const { FormatMillisec } = require("../utils/time");
+const Canvas = require("canvas");
+const fs = require("fs")
 
 
 
@@ -57,8 +59,10 @@ class LocalExp{
             // TODO: channel edit 
             if(oldLvl < newLvl){
         
-        
-                const embed = new MessageEmbed()
+                const attachment = await LocalExp.CreateImage(bot, message, exp.newExp, newLvl);
+
+                //lvl up embed
+                /*const embed = new MessageEmbed()
                     .setTitle("Szintlépés")
                     .setAuthor(message.guild.name, message.guild.iconURL())
                     .setDescription(`${message.member?.nickname ?? message.author.username} elérte a következő szintet.`)
@@ -74,11 +78,57 @@ class LocalExp{
                     )
                     .setColor(Config.embed.colors.money)
                     .setThumbnail(message.author.avatarURL())
-                    .setTimestamp();
+                    .setTimestamp();*/
         
-                await message.reply({embeds: [embed]});
+                //await message.reply({embeds: [embed]});
+                await message.reply({ files: [attachment] });
             }
         };
+
+        static async CreateImage(bot, message, xp, lvl){
+
+            //create base image with background
+            const canvas = Canvas.createCanvas(700, 250);
+            const context = canvas.getContext("2d");
+            const background = await Canvas.loadImage("./files/images/backgrounds/levelUp.png");
+
+            context.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+
+            //create text
+
+            //TODO: continue
+            const text = `${message.author?.username}\t${lvl} szint`;
+            const fontSize = 24;
+            context.font = `${fontSize}px verdana`;
+
+            while(context.measureText(text).width > canvas.width - 300){
+                context.font = `${fontSize-=10}px verdana`;
+            }
+
+            context.fillStyle = "#ffffff";
+            context.fillText(text, canvas.width / 2.5, canvas.height / 2.8);
+
+
+            //add user image
+            const avatarLocation = {x: 50, y: 25, size: 200};
+
+	        context.beginPath();
+	        context.arc(
+                100 + avatarLocation.x, 100 + avatarLocation.y, avatarLocation.size / 2, 0, Math.PI * 2, true
+            );
+	        context.closePath();
+	        context.clip();
+        
+            const avatar = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg', size: 256 }));
+            context.drawImage(avatar, avatarLocation.x, avatarLocation.y, avatarLocation.size, avatarLocation.size);
+
+
+            //create an attachment and return it
+            const attachment = new MessageAttachment(canvas.toBuffer(), "lvlUp.png");
+
+            return attachment;
+        }
 };
 
 class GlobalExp{
@@ -167,7 +217,7 @@ async function HandleCooldown(bot, message, command){
 module.exports = {
     name: "messageCreate",
     async execute(bot, message) {
-        
+
         if(message.author.bot) return;
         
 
