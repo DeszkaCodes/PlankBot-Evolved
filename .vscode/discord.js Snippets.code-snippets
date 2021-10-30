@@ -1,0 +1,51 @@
+{
+	// Place your PlankBot-Evolved workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+
+	"Basic Command": {
+		"scope": "javascript, typescript",
+		"prefix": "!!cmd",
+		"body": [
+			"module.exports = {",
+			"    name: \"${1:commandName}\",",
+			"    cooldown: { IsOn: ${2|true,false|}, Time: ${3|milliseconds,null|} }, // Time given in milliseconds",
+			"    help: {",
+			"        //template {name: any, description: any, optional: boolean, type: any}",
+			"        arguments: [],",
+			"        description: \"Kilistázza az összes tag szintjét csökkenő sorrendben.\"",
+			"},",
+			"    async execute(bot, message, ...args){",
+			"        ${4:commandBlock}",
+			"    }",
+			"};"
+		]
+	},
+	"Reply with an embed": {
+		"scope": "javascript, typescript",
+		"prefix": "!!rplEmbed",
+		"body": [
+			"${1:message}.reply({ embeds: [ ${2:embed} ] });"
+		]
+	},
+	"Reply with a file": {
+		"scope": "javascript, typescript",
+		"prefix": "!!rplAttachment",
+		"body": [
+			"${1:message}.reply({ files: [ ${2:attachment} ] });"
+		]
+	}
+}
