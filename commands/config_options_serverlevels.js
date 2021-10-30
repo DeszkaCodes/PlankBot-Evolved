@@ -25,7 +25,7 @@ module.exports = {
                 [ {name: "Beírt érték", value: value} ]
             )
 
-            await message.reply({embeds: [embed]});
+            message.reply({embeds: [embed]});
             return;
         }
 
@@ -43,14 +43,14 @@ module.exports = {
                 .setDescription(`Mostantól a tagok ${option ? "szinteket léphetnek" : "nem léphetnek szinteket"}.`)
                 .setTimestamp();
 
-            await message.reply({embeds: [embed]});
+            message.reply({embeds: [embed]});
         }
         else{
             const embed = errorEmbed(bot,
                 "A szintlépést nem tudtuk átállítani."
             );
 
-            await message.reply({embeds: [embed]});
+            message.reply({embeds: [embed]});
         }
 
     }

@@ -21,7 +21,7 @@ module.exports = {
                 [ {name: "Indok", value: "Nem tartozol a bot tulajai közé."} ]
             );
 
-            await message.reply({embeds: [embed]});
+            message.reply({embeds: [embed]});
             return;
         }
 

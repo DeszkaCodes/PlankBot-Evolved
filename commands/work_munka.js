@@ -43,6 +43,6 @@ module.exports = {
             .setFooter("Hogy kipihend magad nem használhatod ezt a parancsot 5 percig.\n")
 
 
-        await message.reply({embeds: [embed], ephemeral: true});
+        message.reply({embeds: [embed], ephemeral: true});
     }
 };

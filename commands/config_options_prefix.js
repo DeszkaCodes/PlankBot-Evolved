@@ -40,7 +40,7 @@ module.exports = {
                 [ {name: "Hiányos rang", value: "Adminisztrátor"} ]
             );
 
-            await message.reply({embeds: [embed]});
+            message.reply({embeds: [embed]});
 
             return;
         }
@@ -61,7 +61,7 @@ module.exports = {
                     ]
                 );
     
-                await message.reply({embeds: [embed]});
+                message.reply({embeds: [embed]});
 
                 return;
             }
@@ -75,7 +75,7 @@ module.exports = {
                     .setDescription("A szerver saját prefixuma törölve lett.")
                     .setTimestamp();
 
-                await message.reply({embeds: [embed]});
+                message.reply({embeds: [embed]});
             }
             else{
                 const embed = errorEmbed(
@@ -83,7 +83,7 @@ module.exports = {
                     "A szerver saját prefixuma nem lett törölve"
                 );
 
-                await message.reply({embeds: [embed]});
+                message.reply({embeds: [embed]});
             }
             
             return;
@@ -94,7 +94,7 @@ module.exports = {
                 "Nem adtál meg prefixumot."
             );
 
-            await message.reply({embeds: [embed]});
+            message.reply({embeds: [embed]});
 
             return;
         }
@@ -112,7 +112,7 @@ module.exports = {
                 ]
             );
 
-            await message.reply({embeds: [embed]});
+            message.reply({embeds: [embed]});
 
             return;
         }
@@ -128,7 +128,7 @@ module.exports = {
                 ]
             );
 
-            await message.reply({embeds: [embed]});
+            message.reply({embeds: [embed]});
 
             return;
         }
@@ -152,7 +152,7 @@ module.exports = {
                 .addField("Információ", "Emelett még lehet használni az alapvető prefixumot is")
                 .setTimestamp();
 
-            await message.reply({embeds: [embed]});
+            message.reply({embeds: [embed]});
         }
     }
 };

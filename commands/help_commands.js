@@ -31,7 +31,7 @@ async function HasCommand(bot, message, args){
             [{name: "Megadott parancs",value: helpCommand}]
         );
 
-        await message.reply({embeds:[embed]});
+        message.reply({embeds:[embed]});
 
         return;
     }
@@ -58,7 +58,7 @@ async function HasCommand(bot, message, args){
         };
     };
 
-    await message.reply({embeds:[embed]});
+    message.reply({embeds:[embed]});
 };
 
 async function NoCommandsGiven(bot, message, args){
@@ -78,7 +78,7 @@ async function NoCommandsGiven(bot, message, args){
         .setDescription("Összes parancs listája.")
         .addField(`Parancsok\n${Config.embed.empty}`, arguments);
 
-    await message.reply({embeds:[embed]});
+    message.reply({embeds:[embed]});
 };
 
 module.exports = {

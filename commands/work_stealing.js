@@ -81,6 +81,6 @@ module.exports = {
             embed.setColor(Config.embed.colors.error);
         }
         
-        await message.reply({embeds: [embed]});
+        message.reply({embeds: [embed]});
     }
 };

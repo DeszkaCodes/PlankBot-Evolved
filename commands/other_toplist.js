@@ -81,6 +81,6 @@ module.exports = {
             index++;
         }
 
-        await message.reply({embeds: [embed]});
+        message.reply({embeds: [embed]});
     }
 };

@@ -44,34 +44,42 @@ class LocalExp{
         };
 
         static async LevelHandling(bot, message){
+            //create all promises
+            const expPromise = this.HandleExp(message);
+            
+            const exp = await expPromise;
+            
+            const oldLvl = ExpToLevel(exp.oldExp);
+            const newLvl = ExpToLevel(exp.newExp);
+            
+            const attachmentPromise = LocalExp.CreateImage(bot, message, exp.newExp, newLvl);
+
             const [serverData, found] = await Database.ServerData.findCreateFind({
                 attributes: [ "LEVELING" ],
                 where: { ID: message.guildId }
             });
-        
+
+            
             if(!serverData.LEVELING) return;
-        
-            const exp = await this.HandleExp(message);
-        
-            const oldLvl = ExpToLevel(exp.oldExp);
-            const newLvl = ExpToLevel(exp.newExp);
-        
         
             // TODO: channel edit 
             if(oldLvl < newLvl){
         
-                const attachment = await LocalExp.CreateImage(bot, message, exp.newExp, newLvl);
+                const attachment = await attachmentPromise
 
-                await message.reply({ files: [attachment] });
+                message.reply({ files: [attachment] });
             }
         };
 
         static async CreateImage(bot, message, xp, lvl){
 
+            const backgroundPromise = Canvas.loadImage("./files/images/backgrounds/levelUp.png");
+            const avatarPromise = Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg', size: 256 }));
+
             //create base image with background
             const canvas = Canvas.createCanvas(700, 250);
             const context = canvas.getContext("2d");
-            const background = await Canvas.loadImage("./files/images/backgrounds/levelUp.png");
+            const background = await backgroundPromise;
 
             context.drawImage(background, 0, 0, canvas.width, canvas.height);
 
@@ -117,7 +125,7 @@ class LocalExp{
 	        context.closePath();
 	        context.clip();
         
-            const avatar = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg', size: 256 }));
+            const avatar = await avatarPromise;
             context.drawImage(avatar, avatarLocation.x, avatarLocation.y, avatarLocation.size, avatarLocation.size);
             context.strokeStyle = "#000000";
             context.lineWidth = 5;
@@ -220,8 +228,7 @@ module.exports = {
 
         if(message.author.bot) return;
         
-
-        await LocalExp.LevelHandling(bot, message);
+        LocalExp.LevelHandling(bot, message);
 
 
         const PREFIX = await GetPrefix(message);
@@ -241,7 +248,7 @@ module.exports = {
                 [{name: "Megadott parancs", value: command}]
             )
 
-            await message.reply({embeds: [embed]});
+            message.reply({embeds: [embed]});
 
             return;
         }
@@ -254,7 +261,7 @@ module.exports = {
                 [{name:"Következőnek használható", value: `${FormatMillisec(cooldown.Time)} múlva`}]
             )
 
-            await message.reply({embeds: [embed]});
+            message.reply({embeds: [embed]});
 
             return;
         }

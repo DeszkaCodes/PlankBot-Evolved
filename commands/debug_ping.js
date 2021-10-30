@@ -6,6 +6,6 @@ module.exports = {
         description: "Egy egyszerű program, hogy teszteld a bot látja-e az üzeneteid."
     },
     async execute(bot, message, args) {
-        await message.reply("Pong.");
+        message.reply("Pong.");
     }
 };
