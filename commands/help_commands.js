@@ -2,6 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const { errorEmbed, EmbedBotAuthor } = require("../utils/embed");
 const Config = require("../data/config.json");
 const { Capitalize } = require("../utils/stringFunctions.js");
+const { FormatMillisec } = require("../utils/time");
 
 function HowToUse(command){
 
@@ -44,14 +45,14 @@ async function HasCommand(bot, message, args){
         .setDescription(command.help.description)
         .addFields([
             {name: "Használat", value: HowToUse(command), inline: false },
-            {name: "Cooldown", value: `${command.cooldown.IsOn ? "Van" : "Nincs"}`, inline: false },
+            {name: "Cooldown", value: `${command.cooldown.IsOn ? FormatMillisec(command.cooldown.Time) : "Nincs"}`, inline: false },
         ]);
 
     if(command.help.arguments.length > 0){
         embed.addField(Config.embed.empty, "**Paraméterek:**", false)
         for(let argument of command.help.arguments){
             embed.addField(
-                `${Capitalize(argument.name)} ${argument.optional ? "*(opcionális)*" : ""}`,
+                `${Capitalize(argument.name)}${argument.type ? `: ${argument.type}` : ""} ${argument.optional ? "*(opcionális)*" : ""}`,
                 Capitalize(argument.description),
                 false
             );

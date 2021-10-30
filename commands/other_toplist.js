@@ -16,7 +16,7 @@ module.exports = {
     name: "toplista",
     cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
     help: {
-        arguments: [{name: "oldal", description: "az nézni kívánt oldal", optional: true}],
+        arguments: [{name: "oldal", description: "az nézni kívánt oldal", optional: true, type: "egész szám"}],
         description: "Kilistázza az összes tag szintjét csökkenő sorrendben."
     },
     async execute(bot, message, args){

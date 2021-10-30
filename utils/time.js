@@ -6,6 +6,17 @@ const Time = {
     day: 86400000,
 }
 
+function DoubleDigit(time){
+    let digit = `${time}`;
+
+    if(digit.length < 1)
+        digit = "00";
+    else if(digit.length == 1)
+        digit = `0${digit}`;
+
+    return digit;
+}
+
 function FormatMillisec(timeperiod, long = true, capitalized = true) {
 
     const days = Math.floor(timeperiod / Time.day);
@@ -21,9 +32,9 @@ function FormatMillisec(timeperiod, long = true, capitalized = true) {
     if(days > 0)
         time += `${days} nap`;
     if(hours > 0)
-        time += ` ${hours}:${minutes} óra`
+        time += ` ${hours}:${DoubleDigit(minutes)} óra`
     else if(minutes > 0)
-        time += ` ${minutes}:${seconds} perc`
+        time += ` ${minutes}:${DoubleDigit(seconds)} perc`
     else if(seconds > 0)
         time += ` ${seconds} másodperc`
     else
