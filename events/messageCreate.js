@@ -8,7 +8,8 @@ const { errorEmbed } = require("../utils/embed");
 const Config = require("../data/config.json");
 const { FormatMillisec } = require("../utils/time");
 const Canvas = require("canvas");
-const fs = require("fs")
+const fs = require("fs");
+const { ResponsiveText } = require("../utils/imagemanipulator");
 
 
 
@@ -61,26 +62,6 @@ class LocalExp{
         
                 const attachment = await LocalExp.CreateImage(bot, message, exp.newExp, newLvl);
 
-                //lvl up embed
-                /*const embed = new MessageEmbed()
-                    .setTitle("Szintlépés")
-                    .setAuthor(message.guild.name, message.guild.iconURL())
-                    .setDescription(`${message.member?.nickname ?? message.author.username} elérte a következő szintet.`)
-                    .addField(
-                        `Eddigi szint`,
-                        `${oldLvl == 0 ? "Nem ért még el szintet." : oldLvl }`,
-                        true
-                    )
-                    .addField(
-                        `Új szint`,
-                        `${newLvl}`,
-                        true
-                    )
-                    .setColor(Config.embed.colors.money)
-                    .setThumbnail(message.author.avatarURL())
-                    .setTimestamp();*/
-        
-                //await message.reply({embeds: [embed]});
                 await message.reply({ files: [attachment] });
             }
         };
@@ -97,17 +78,33 @@ class LocalExp{
 
             //create text
 
-            //TODO: continue
-            const text = `${message.author?.username}\t${lvl} szint`;
-            const fontSize = 24;
-            context.font = `${fontSize}px verdana`;
-
-            while(context.measureText(text).width > canvas.width - 300){
-                context.font = `${fontSize-=10}px verdana`;
-            }
-
             context.fillStyle = "#ffffff";
-            context.fillText(text, canvas.width / 2.5, canvas.height / 2.8);
+
+            let text = "SZINTLÉPÉS!"
+            context.font = "bold 36px verdana";
+
+            context.fillText(text, canvas.width / 2.5, canvas.height / 3);
+
+            text = `${message.author.username} elérte a(z) ${lvl}. szintet`;
+
+            context.font = ResponsiveText(
+                    canvas, 300,
+                    text,
+                    30
+                );
+
+            context.fillText(text, canvas.width / 2.5, canvas.height / 1.90);
+
+            text = `${xp} XP`;
+
+            context.font = ResponsiveText(
+                canvas, 100,
+                text,
+                18,
+                "italic normal lighter"
+            );
+
+            context.fillText(text, canvas.width / 2.5, canvas.height / 1.4);
 
 
             //add user image
@@ -122,6 +119,9 @@ class LocalExp{
         
             const avatar = await Canvas.loadImage(message.author.displayAvatarURL({ format: 'jpg', size: 256 }));
             context.drawImage(avatar, avatarLocation.x, avatarLocation.y, avatarLocation.size, avatarLocation.size);
+            context.strokeStyle = "#000000";
+            context.lineWidth = 5;
+            context.stroke();
 
 
             //create an attachment and return it
