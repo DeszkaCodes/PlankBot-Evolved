@@ -20,15 +20,15 @@
 		"scope": "javascript, typescript",
 		"prefix": "!!cmd",
 		"body": [
-			"const { SlashCommandBuilder } = require('@discordjs/builders');",
+			"${1:const { SlashCommandBuilder } = require('@discordjs/builders');}",
 			"",
 			"module.exports = {",
 			"    data: new SlashCommandBuilder()",
-			"        .setName(\"${1:name}\")",
-			"        .setDescription(\"${2:description}\"),",
-			"    cooldown: { IsOn: ${3|false,true|}, Time: null }, // Time given in milliseconds",
+			"        .setName(\"${2:name}\")",
+			"        .setDescription(\"${3:description}\"),",
+			"    cooldown: { IsOn: ${4|false,true|}, Time: null }, // Time given in milliseconds",
 			"    async execute(bot, interaction) {",
-			"        ${4:command};",
+			"        //${5:command};",
 			"};"
 		]
 	},
