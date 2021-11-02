@@ -4,7 +4,7 @@ dotenv.config( { path: "./data/.env"});
 
 const Settings = {
     token : process.env.BOT_TOKEN,
-    sqlDebug : Boolean(process.env.SQL_DEBUG),
+    debug : process.env.DEBUG
 }
 
 module.exports = {Settings};
