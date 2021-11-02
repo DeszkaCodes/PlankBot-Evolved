@@ -62,22 +62,6 @@ const LocalData = sequelize.define("LocalData", {
     timestamps: false
 });
 
-const GlobalData = sequelize.define("GlobalData", {
-    ID: {
-        type: customTypes.ID,
-        primaryKey: true,
-        allowNull: false
-    },
-    EXP: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0
-    }
-},
-{
-    timestamps: false
-});
-
 const ServerData = sequelize.define("ServerData", {
     ID: {
         type: customTypes.ID,
@@ -88,10 +72,6 @@ const ServerData = sequelize.define("ServerData", {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false
-    },
-    PREFIX: {
-        type: Sequelize.STRING(10),
-        allowNull: true,
     },
     LEVELING: {
         type: Sequelize.BOOLEAN,
@@ -173,7 +153,6 @@ const Shop = sequelize.define("Shop", {
 async function Init(){
     await Promise.all([
         LocalData.sync({force: true, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
-        GlobalData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
         ServerData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
         ChannelData.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
         CommandCooldowns.sync({force: false, alter: { drop: Config.database.databaseDropAlter } }).catch(console.error),
@@ -186,7 +165,6 @@ async function Init(){
 module.exports = {
     Init,
     LocalData,
-    GlobalData,
     ServerData,
     ChannelData,
     CommandCooldowns,
