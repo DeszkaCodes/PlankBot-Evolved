@@ -1,7 +1,8 @@
 const fs = require('fs');
-const { Client, Intents } = require('discord.js');
-const Discord = require('discord.js')
+const { Client, Intents, Collection } = require('discord.js');
 const { Settings } = require("./utils/settings");
+
+const RegisterCommands = require("./setup/register-commands");
 
 
 // Setting up intents and bot
@@ -12,28 +13,33 @@ const bot = new Client( {intents: intents} );
 
 
 //Load events
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith(".js") || file.endsWith(".ts"));
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith(".js"));
 
 for (const file of eventFiles){
     const event = require("./events/" + file);
 
     if(event.once)
-        bot.once(event.name, (...args) => event.execute(...args));
+        bot.once(event.name, interaction => event.execute(interaction));
     else
-        bot.on(event.name, (...args) => event.execute(bot, ...args));
+        bot.on(event.name, interaction => event.execute(bot, interaction));
 }
 
+RegisterCommands()
 
-//Load commands
-bot.commands = new Discord.Collection();
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith(".js") || file.endsWith(".ts"));
 
-for (const file of commandFiles){
-    const command = require("./commands/" + file);
+//Loading commands
 
-    bot.commands.set(command.name, command);
+bot.commands = new Collection();
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+
+    bot.commands.set(command.data.name, command);
 }
+
 
 
 //Logging in bot
