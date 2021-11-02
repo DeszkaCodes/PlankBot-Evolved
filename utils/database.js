@@ -129,12 +129,22 @@ const Shop = sequelize.define("Shop", {
         primaryKey: true,
         allowNull: false
     },
-    ID: {
-        type: customTypes.SHA512,
+    NAME: {
+        type: Sequelize.STRING(50),
         primaryKey: true,
         allowNull: false
     },
-    ROLEID: {
+    DESCRIPTION: {
+        type: Sequelize.STRING,
+        primaryKey: true,
+        allowNull: false
+    },
+    TYPE: {
+        type: Sequelize.STRING(8),
+        primaryKey: true,
+        allowNull: false
+    },
+    ID: {
         type: customTypes.ID,
         allowNull: false
     },
@@ -145,6 +155,9 @@ const Shop = sequelize.define("Shop", {
     AMOUNT: {
         type: Sequelize.INTEGER
     }
+},
+{
+    timestamps: false
 });
 
 
