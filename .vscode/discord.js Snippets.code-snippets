@@ -36,14 +36,14 @@
 		"scope": "javascript, typescript",
 		"prefix": "!!rplEmbed",
 		"body": [
-			"${1:message}.reply({ embeds: [ ${2:embed} ] });"
+			"${1|message,interaction|}.reply({ embeds: [ ${2:embed} ] });"
 		]
 	},
 	"Reply with a file": {
 		"scope": "javascript, typescript",
 		"prefix": "!!rplAttachment",
 		"body": [
-			"${1:message}.reply({ files: [ ${2:attachment} ] });"
+			"${1|message,interaction|}.reply({ files: [ ${2:attachment} ] });"
 		]
 	}
 }
