@@ -24,8 +24,8 @@ for (const file of eventFiles){
         bot.on(event.name, (...args) => event.execute(bot, ...args));
 }
 
+//register commands
 RegisterCommands()
-
 
 
 //Loading commands
@@ -35,11 +35,10 @@ bot.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-
+    const command = require(`./commands/${file}`);
+    
     bot.commands.set(command.data.name, command);
 }
-
 
 
 //Logging in bot
