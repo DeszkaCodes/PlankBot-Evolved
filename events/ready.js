@@ -8,7 +8,7 @@ const { ArrayCycle } = require("../utils/array");
 async function SetupIntervals(bot){
 
     //Deletes already expired cooldowns from database
-    const TrimCommandCooldownInterval = setInterval(function() {
+    setInterval(function() {
         for (let command of bot.commands.filter(comm => comm.cooldown.IsOn)) {
             Database.CommandCooldowns.destroy({
                 where: {
@@ -25,7 +25,7 @@ async function SetupIntervals(bot){
 
     //Changes presence of bot
     const cycle = new ArrayCycle(Config.botUser.activity);
-    const BotPresenceInterval = setInterval(async function() {
+    setInterval(async function() {
         const activity = cycle.next();
         bot.user?.setActivity({ name: activity.name, type: activity.type });
     }, Config.intervals.changePresence);
