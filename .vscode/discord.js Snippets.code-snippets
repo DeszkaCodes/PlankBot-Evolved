@@ -26,7 +26,7 @@
 			"    data: new SlashCommandBuilder()",
 			"        .setName(\"${1:name}\")",
 			"        .setDescription(\"${2:description}\"),",
-			"    cooldown: { IsOn: ${3|true,false|}, Time: null }, // Time given in milliseconds",
+			"    cooldown: { IsOn: ${3|false,true|}, Time: null }, // Time given in milliseconds",
 			"    async execute(bot, interaction) {",
 			"        ${4:command};",
 			"};"
