@@ -19,9 +19,9 @@ for (const file of eventFiles){
     const event = require("./events/" + file);
 
     if(event.once)
-        bot.once(event.name, interaction => event.execute(interaction));
+        bot.once(event.name, (...args) => event.execute(...args));
     else
-        bot.on(event.name, interaction => event.execute(bot, interaction));
+        bot.on(event.name, (...args) => event.execute(bot, ...args));
 }
 
 RegisterCommands()
