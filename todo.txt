@@ -4,4 +4,3 @@
 -roulette system
 -local card system
 -global card system
--command aliases
