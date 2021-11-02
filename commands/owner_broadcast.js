@@ -1,19 +1,24 @@
 const Discord = require("discord.js");
 const { errorEmbed } = require("../utils/embed");
 const { GetInvite, IsOwner } = require("../utils/clientHelper");
+const { SlashCommandBuilder } = require("@discordjs/builders");
+const Config = require("../data/config.json");
+const chalk = require("chalk");
 
 module.exports = {
-    name: "broadcast",
+    data : new SlashCommandBuilder()
+        .setName("hirdet")
+        .setDescription("Elküldi az üzenetet minden szerver fő szobájába, ahol tag a bot.")
+        .addStringOption(option => 
+            option.setName("szöveg")
+                .setDescription("A szöveg amit elküld a bot")
+                .setRequired(true)),
     cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
-    help: {
-        arguments: [{name: "üzenet", description: "közvetítendő üzenet", optional: false}],
-        description: "Elküldi az üzenetet minden szerver fő szobájába, ahol tag a bot."
-    },
-    async execute(bot, message, text){
+    async execute(bot, interaction){
 
-        text = text.join(" ");
+        const text = interaction.options.getString("szöveg");
 
-        if(!IsOwner(bot, message.author)){
+        if(!IsOwner(bot, interaction.user)){
 
             const embed = errorEmbed(
                 bot,
@@ -21,7 +26,7 @@ module.exports = {
                 [ {name: "Indok", value: "Nem tartozol a bot tulajai közé."} ]
             );
 
-            message.reply({embeds: [embed]});
+            interaction.reply({embeds: [embed]});
             return;
         }
 
@@ -42,6 +47,14 @@ module.exports = {
             guild.systemChannel?.send({embeds: [embed], content: "@everyone"});
         }
 
-        console.log(`Global message sent to every possible guild:\n${text}\n\n`);
+        const embed = new Discord.MessageEmbed()
+            .setTitle("Üzenet sikeresen elküldve")
+            .setDescription("Sikeresen elküldted az üzenetet minden szerverre.")
+            .setColor(Config.embed.colors.success)
+            .setTimestamp();
+
+        interaction.reply({ embeds: [ embed ] });
+
+        console.log(chalk.bold(`Global message sent to every possible guild:\n${text}\n\n`));
     }
 };

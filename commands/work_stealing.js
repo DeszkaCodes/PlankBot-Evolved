@@ -6,6 +6,7 @@ const Config = require("../data/config.json");
 const { clamp } = require("../utils/math");
 const { RandomInt } = require("../utils/random");
 const { Op } = require("sequelize");
+const { SlashCommandBuilder } = require("@discordjs/builders");
 
 function DecideSuccess(){
     /**
@@ -20,12 +21,10 @@ function DecideSuccess(){
 };
 
 module.exports = {
-    name: "lop",
+    data : new SlashCommandBuilder()
+        .setName("lopás")
+        .setDescription("Egy kockázatos pénzszerzési módszer.\nVigyázz, ha lebuksz nagy az ára!"),
     cooldown: { IsOn: true, Time: Time.minute * 15 }, // Time given in milliseconds
-    help: {
-        arguments: [],
-        description: "Egy kockázatos pénzszerzési módszer.\nVigyázz, ha lebuksz nagy az ára!"
-    },
     async execute(bot, message, ...args){
         
         //preparation for the command

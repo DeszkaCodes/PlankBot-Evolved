@@ -3,6 +3,8 @@ const Config = require("../data/config.json");
 const { GetUser } = require("../utils/userAuthentication");
 const { ExpToLevel } = require("../utils/calculations");
 const { MessageEmbed } = require("discord.js");
+const { clamp } = require("../utils/math");
+const { SlashCommandBuilder } = require("@discordjs/builders");
 
 async function ValidateUser(bot, row){
     const rawUser = await GetUser(bot, row.ID);
@@ -13,31 +15,42 @@ async function ValidateUser(bot, row){
 }
 
 module.exports = {
-    name: "toplista",
+    data : new SlashCommandBuilder()
+        .setName("toplista")
+        .setDescription("Az összes rang szintje csökkenő sorrendben")
+        .addIntegerOption(option => 
+            option.setName("oldal")
+                .setDescription("Az oldal amelyiket meg szeretnéd tekinteni")),
     cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
-    help: {
-        arguments: [{name: "oldal", description: "az nézni kívánt oldal", optional: true, type: "egész szám"}],
-        description: "Kilistázza az összes tag szintjét csökkenő sorrendben."
-    },
-    async execute(bot, message, args){
+    async execute(bot, interaction){
         const count = await Database.LocalData.count({
-            where: { SERVERID: message.guild.id }
+            where: { SERVERID: interaction.guildId }
         });
 
         const pages = Math.ceil(count / Config.toplist.toplistPageLimit);
 
-        if(args[0] == undefined || args[0] <= 0)
-            args[0] = 0;
-        else
-            args[0] = args[0] - 1;
+        if(pages <= 0){
+            const embed = new MessageEmbed()
+                .setTitle("Szintek toplistája")
+                .setAuthor(interaction.guild.name, interaction.guild.iconURL())
+                .setColor(Config.embed.colors.default)
+                .setDescription(`Ezen a szerveren még senki nem ért el szintet.`)
+                .setTimestamp();
 
-        const page = args[0] > pages ? pages-1 : args[0] ;
+            interaction.reply({ embeds: [ embed ] });
+
+            return;
+        }
+
+        const rawPage = clamp(interaction.options.getInteger("oldal"), 1, pages)
+
+        const page = rawPage - 1;
 
         const offset = page * Config.toplist.toplistPageLimit;
 
         const { found, rows } = await Database.LocalData.findAndCountAll({
             attributes: { exclude: ["SERVERID", "BALANCE"] },
-            where: { SERVERID: message.guild.id },
+            where: { SERVERID: interaction.guildId },
             limit: Config.toplist.toplistPageLimit,
             offset: offset,
             order: [["EXP", "DESC"]]
@@ -46,7 +59,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setTitle("Szintek toplistája")
-            .setAuthor(message.guild.name, message.guild.iconURL())
+            .setAuthor(interaction.guild.name, interaction.guild.iconURL())
             .setColor(Config.embed.colors.default)
             .setDescription(`Az összes tag szintje csökkenő sorrendben.`)
             .setFooter(`${page+1}/${pages}`)
@@ -81,6 +94,6 @@ module.exports = {
             index++;
         }
 
-        message.reply({embeds: [embed]});
+        interaction.reply({embeds: [embed]});
     }
 };

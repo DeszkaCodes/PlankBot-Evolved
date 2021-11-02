@@ -20,8 +20,11 @@
   },
   "homepage": "https://github.com/Skydeszka/PlankBot-Evolved#readme",
   "dependencies": {
+    "@discordjs/builders": "^0.8.2",
+    "@discordjs/rest": "^0.1.0-canary.0",
     "canvas": "^2.8.0",
     "chalk": "^4.1.2",
+    "discord-api-types": "^0.24.0",
     "discord.js": "^13.2.0",
     "dotenv": "^10.0.0",
     "sequelize": "^6.7.0",

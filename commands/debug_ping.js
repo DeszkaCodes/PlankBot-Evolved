@@ -1,11 +1,11 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
+
 module.exports = {
-    name: "ping",
-    cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
-    help: {
-        arguments: [],
-        description: "Egy egyszerű program, hogy teszteld a bot látja-e az üzeneteid."
-    },
-    async execute(bot, message, args) {
-        message.reply("Pong.");
-    }
+	data: new SlashCommandBuilder()
+		.setName('ping')
+		.setDescription('Ellenőrzi, hogy a bot megkapja az üzeneteid.'),
+	cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
+	async execute(bot, interaction) {
+		interaction.reply('Pong!');
+	},
 };

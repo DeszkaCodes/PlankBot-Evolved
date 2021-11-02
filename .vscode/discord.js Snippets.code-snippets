@@ -20,17 +20,15 @@
 		"scope": "javascript, typescript",
 		"prefix": "!!cmd",
 		"body": [
+			"const { SlashCommandBuilder } = require('@discordjs/builders');",
+			"",
 			"module.exports = {",
-			"    name: \"${1:commandName}\",",
-			"    cooldown: { IsOn: ${2|true,false|}, Time: ${3|milliseconds,null|} }, // Time given in milliseconds",
-			"    help: {",
-			"        //template {name: any, description: any, optional: boolean, type: any}",
-			"        arguments: [],",
-			"        description: \"Kilistázza az összes tag szintjét csökkenő sorrendben.\"",
-			"},",
-			"    async execute(bot, message, ...args){",
-			"        ${4:commandBlock}",
-			"    }",
+			"    data: new SlashCommandBuilder()",
+			"        .setName(\"${1:name}\")",
+			"        .setDescription(\"${2:description}\"),",
+			"    cooldown: { IsOn: ${3|true,false|}, Time: null }, // Time given in milliseconds",
+			"    async execute(bot, interaction) {",
+			"        ${4:command};",
 			"};"
 		]
 	},
@@ -38,14 +36,14 @@
 		"scope": "javascript, typescript",
 		"prefix": "!!rplEmbed",
 		"body": [
-			"${1:message}.reply({ embeds: [ ${2:embed} ] });"
+			"${1|message,interaction|}.reply({ embeds: [ ${2:embed} ] });"
 		]
 	},
 	"Reply with a file": {
 		"scope": "javascript, typescript",
 		"prefix": "!!rplAttachment",
 		"body": [
-			"${1:message}.reply({ files: [ ${2:attachment} ] });"
+			"${1|message,interaction|}.reply({ files: [ ${2:attachment} ] });"
 		]
 	}
 }

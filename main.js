@@ -1,7 +1,8 @@
 const fs = require('fs');
-const { Client, Intents } = require('discord.js');
-const Discord = require('discord.js')
+const { Client, Intents, Collection } = require('discord.js');
 const { Settings } = require("./utils/settings");
+
+const RegisterCommands = require("./setup/register-commands");
 
 
 // Setting up intents and bot
@@ -12,7 +13,7 @@ const bot = new Client( {intents: intents} );
 
 
 //Load events
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith(".js") || file.endsWith(".ts"));
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith(".js"));
 
 for (const file of eventFiles){
     const event = require("./events/" + file);
@@ -23,16 +24,20 @@ for (const file of eventFiles){
         bot.on(event.name, (...args) => event.execute(bot, ...args));
 }
 
+//register commands
+RegisterCommands()
 
-//Load commands
-bot.commands = new Discord.Collection();
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith(".js") || file.endsWith(".ts"));
+//Loading commands
 
-for (const file of commandFiles){
-    const command = require("./commands/" + file);
+bot.commands = new Collection();
 
-    bot.commands.set(command.name, command);
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    
+    bot.commands.set(command.data.name, command);
 }
 
 
