@@ -136,12 +136,9 @@ const Shop = sequelize.define("Shop", {
     },
     DESCRIPTION: {
         type: Sequelize.STRING,
-        primaryKey: true,
-        allowNull: false
     },
     TYPE: {
         type: Sequelize.STRING(8),
-        primaryKey: true,
         allowNull: false
     },
     ID: {
@@ -153,7 +150,9 @@ const Shop = sequelize.define("Shop", {
         defaultValue: 0
     },
     AMOUNT: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        defaultValue: null
     }
 },
 {
