@@ -20,7 +20,7 @@
 		"scope": "javascript, typescript",
 		"prefix": "!!cmd",
 		"body": [
-			"${1:const { SlashCommandBuilder } = require('@discordjs/builders');}",
+			"${1:const { SlashCommandBuilder \\} = require('@discordjs/builders');}",
 			"",
 			"module.exports = {",
 			"    data: new SlashCommandBuilder()",
@@ -29,6 +29,7 @@
 			"    cooldown: { IsOn: ${4|false,true|}, Time: null }, // Time given in milliseconds",
 			"    async execute(bot, interaction) {",
 			"        //${5:command};",
+			"    }",
 			"};"
 		]
 	},
