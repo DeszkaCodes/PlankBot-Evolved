@@ -60,7 +60,7 @@ class EditShop{
             .addField("Rang", `<@&${role.id}>`, true)
             .addField("Leírás", description, false)
             .addField("Ára", cost.toLocaleString(), true)
-            .addField("Mennyiség", amount.toLocaleString() ?? "Limitálatlan", true);
+            .addField("Mennyiség", amount?.toLocaleString() ?? "Limitálatlan", true);
 
         
         interaction.reply({ embeds: [ embed ], ephemeral: true });
@@ -109,8 +109,8 @@ class EditShop{
 }
 
 class Buy{
-    async static Buy(bot, interaction){
-        const [data, found] = await LocalData.findCreateFind({
+    static async BuyEntry(bot, interaction){
+        const buyerDataPromise = LocalData.findCreateFind({
             where: { [Op.and]: { SERVERID: interaction.guildId, ID: interaction.user.id } },
             defaults: { SERVERID: interaction.guildId, ID: interaction.user.id }
         });
@@ -118,24 +118,57 @@ class Buy{
         const name = interaction.options.getString("név").substring(0,50);
         const reciever = interaction.options.getMember("felhasználó", false) ?? interaction.member;
 
-        const shopData = this._GetData(interaction, name);
+        const shopDataPromise = Shop.findOne(
+            { where : { [Op.and]: [ { SERVERID: interaction.guildId }, { NAME: name } ] }}
+        );
 
+        const shopData = await shopDataPromise;
+        
+        
         if(!shopData){
-
+            
             const embed = new MessageEmbed()
                 .setTitle("Vásárlás sikertelen")
                 .setDescription("Nem létezik ilyen áru.")
                 .setColor(Config.embed.colors.error)
                 .setTimestamp()
                 .addField("Megadott név", name);
+                
+                interaction.reply({ embeds: [ embed ] });
+                
+                return;
+        };
+
+
+        const rolePromise = interaction.guild.roles.fetch(shopdata.ID);
+
+
+        //Only get the data, not the boolean return
+        const buyerData = (await buyerDataPromise)[0];
+
+        if(buyerData.BALANCE < shopData.PRICE){
+
+            const embed = new MessageEmbed()
+                .setTitle("Vásárlás sikertelen")
+                .setDescription("Nincs elegendő pénzed az áru megvásárlásához.")
+                .setColor(Config.embed.colors.error)
+                .setTimestamp()
+                .addField("Egyenleged", buyerData.BALANCE.toLocaleString(), true)
+                .addField("Áru ára", shopData.PRICE.toLocaleString(), true);
 
             interaction.reply({ embeds: [ embed ] });
 
             return;
+        };
+
+
+        try{
+            const role = await rolePromise;
+
+            reciever.roles.add()
         }
 
-        const hasBalance = this._ChangeBalance(interaction, shopData.PRICE)
-    }
+    };
 }
 
 
@@ -202,15 +235,29 @@ module.exports = {
     cooldown: { IsOn: false, Time: null }, // Time given in milliseconds
     async execute(bot, interaction) {
         
-        switch(interaction.options.getSubcommandGroup()){
-            case "szerkesztés":
-                EditShop.Hub(bot, interaction);
+        try{
+            switch(interaction.options.getSubcommandGroup()){
+                case "szerkesztés":
+                    EditShop.Hub(bot, interaction);
+                    return;
+            }
+        }catch(error){
+            if (!error.name == "COMMAND_INTERACTION_OPTION_NO_SUB_COMMAND_GROUP"){
+
+                const embed = errorEmbed(
+                    bot, "Egy váratlan hiba történt.",
+                    [{name: "Hiba neve", value:`${error.name}`}]
+                );
+
+                interaction.reply({ embeds: [ embed ] });
+
                 return;
+            }
         }
 
-        switch(interaction.options.getSubCommand()){
+        switch(interaction.options.getSubcommand()){
             case "vásárlás":
-                Buy.Buy(bot, interaction);
+                Buy.BuyEntry(bot, interaction);
                 return;
         }
 
