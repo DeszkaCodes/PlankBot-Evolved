@@ -37,14 +37,14 @@
 		"scope": "javascript, typescript",
 		"prefix": "!!rplEmbed",
 		"body": [
-			"${1|interaction,message|}.reply({ embeds: [ ${2:embed} ] });"
+			"${1|interaction,message|}.reply({ embeds: [ ${2:embed} ]${3:, ephemeral: true} });"
 		]
 	},
 	"Reply with a file": {
 		"scope": "javascript, typescript",
 		"prefix": "!!rplAttachment",
 		"body": [
-			"${1|interaction,message|}.reply({ files: [ ${2:attachment} ] });"
+			"${1|interaction,message|}.reply({ files: [ ${2:attachment} ]${3:, ephemeral: true} });"
 		]
 	}
 }
