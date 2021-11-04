@@ -25,15 +25,15 @@ module.exports = {
         .setName("lopás")
         .setDescription("Egy kockázatos pénzszerzési módszer.\nVigyázz, ha lebuksz nagy az ára!"),
     cooldown: { IsOn: true, Time: Time.minute * 15 }, // Time given in milliseconds
-    async execute(bot, message, ...args){
+    async execute(bot, interaction){
         
         //preparation for the command
         const wasSuccessful = DecideSuccess();
         const payment = RandomInt(Config.Jobs.Steal.reward.min, Config.Jobs.Steal.reward.max);
 
         const [data, found] = await LocalData.findCreateFind({
-            where: { [Op.and]: { SERVERID: message.guildId, ID: message.author.id } },
-            defaults: { SERVERID: message.guildId, ID: message.author.id }
+            where: { [Op.and]: { SERVERID: interaction.guildId, ID: interaction.member.id } },
+            defaults: { SERVERID: interaction.guildId, ID: interaction.member.id }
         });
 
         let affectedRows = 0;
@@ -41,12 +41,12 @@ module.exports = {
         if(wasSuccessful){
             affectedRows = await LocalData.increment(
                 { BALANCE: +payment },
-                { where: { [Op.and]: {SERVERID: message.guild.id, ID: message.author.id } } }
+                { where: { [Op.and]: {SERVERID: interaction.guild.id, ID: interaction.member.id } } }
             );
         }else{
             affectedRows = await LocalData.increment(
                 { BALANCE: -payment },
-                { where: { [Op.and]: {SERVERID: message.guild.id, ID: message.author.id } } }
+                { where: { [Op.and]: {SERVERID: interaction.guild.id, ID: interaction.member.id } } }
             );
         }
 
@@ -56,13 +56,13 @@ module.exports = {
                 [{name: "Egy váratlan hiba történt.", value: Config.embed.empty}]
             )
 
-            message.reply({embeds: embed});
+            interaction.reply({embeds: embed});
 
             return;
         }
         
         const embed = new MessageEmbed()
-            .setAuthor(message.guild.name, message.guild.iconURL())
+            .setTitle(interaction.guild.name, interaction.guild.iconURL())
             .setTimestamp()
             .setFooter("A nyomozás miatt várnod kell 15 percet, mielőtt újra lophatsz majd.\n");
 
@@ -80,6 +80,6 @@ module.exports = {
             embed.setColor(Config.embed.colors.error);
         }
         
-        message.reply({embeds: [embed]});
+        interaction.reply({embeds: [embed]});
     }
 };
