@@ -414,9 +414,64 @@ class Buy{
     };
 
     static async Show(bot, interaction){
-        const page = interaction.options.getInteger("oldal", false) ?? 1
+        const countPromise = Shop.count(
+            { where: { SERVERID: interaction.guildId } }
+        );
 
-        const allPages = 
+        const rawPage = interaction.options.getInteger("oldal", false) ?? 1
+
+        const pageLimit = 10;
+        const count = await countPromise;
+        const allPages = Math.ceil(count / pageLimit);
+        const page = rawPage-1;
+        const offset = page * pageLimit;
+
+        const shopDataPromise = Shop.findAndCountAll({
+            attributes: { exclude: ["SERVERID", "TYPE"] },
+            where: { SERVERID: interaction.guildId },
+            limit: pageLimit,
+            offset: offset,
+            order: [["PRICE", "DESC"]]
+        });
+
+        if(allPages <= 0){
+            const embed = new MessageEmbed()
+                .setTitle("Bolt")
+                .setAuthor(interaction.guild.name, interaction.guild.iconURL())
+                .setColor(Config.embed.colors.default)
+                .setDescription(`Milyen üresség... bár lenne itt bármi.`)
+                .setTimestamp();
+
+            interaction.reply({ embeds: [ embed ] });
+
+            return;
+        }
+
+        const embed = new MessageEmbed()
+            .setTitle(`${interaction.guild.name} boltja`)
+            .setDescription("Válogass, mi csak szemnek szájnak ingere")
+            .setColor(Config.embed.colors.default)
+            .setTimestamp()
+            .setFooter(`${rawPage}/${allPages}`);
+
+
+        const shopData = await shopDataPromise;
+
+        for(let data of shopData.rows){
+            //line 1
+            embed.addField("Áru neve", data.NAME, true);
+            embed.addField("Rang", `<@&${data.ID}>`, true);
+            embed.addField("Ár", data.PRICE.toLocaleString(), true);
+
+            //line 2
+            embed.addField("Leírás", data.DESCRIPTION, false);
+
+            //
+            embed.addField(Config.embed.empty, Config.embed.empty, false);
+        }
+
+        interaction.reply({ embeds: [ embed ], ephemeral: true });
+
     }
 }
 
