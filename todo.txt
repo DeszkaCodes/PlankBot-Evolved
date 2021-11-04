@@ -1,5 +1,6 @@
 ----TODO----
 
+-system commands limit to permission
 -shop system v0.5
 -roulette system
 -local card system
