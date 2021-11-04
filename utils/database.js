@@ -27,6 +27,16 @@ const sequelize = new Sequelize("database", "user", "password", {
     force: false
 });
 
+/*CONNECT TO XAMPP mySQL
+const sequelize = new Sequelize("test", "root", "", {
+    host: '127.0.0.1',
+	dialect: 'mysql',
+	logging: false,
+    //storage: "./data/database/db.sqlite",
+    force: false
+});
+*/
+
 
 // CUSTOM TYPES
 const customTypes = {
