@@ -8,7 +8,7 @@ const { ArrayCycle } = require("../utils/array");
 async function SetupIntervals(bot){
 
     //Deletes already expired cooldowns from database
-    setInterval(function() {
+    setInterval(async function() {
         for (let command of bot.commands.filter(comm => comm.cooldown.IsOn)) {
             Database.CommandCooldowns.destroy({
                 where: {
@@ -19,7 +19,10 @@ async function SetupIntervals(bot){
                         }}
                     ]
                 }
-            });
+            })
+            .catch(err =>
+                    console.error(err)
+                );
         }
     }, Config.intervals.cooldownTrim);
 
@@ -38,7 +41,7 @@ module.exports = {
         await Database.Init();
 
         //Sets functions to be run periodically
-        SetupIntervals(bot);
+        await SetupIntervals(bot);
         
         console.log(chalk.greenBright(`${bot.user.username} is ready`));
     }
