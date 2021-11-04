@@ -18,7 +18,7 @@ module.exports = {
 
         const text = interaction.options.getString("szöveg");
 
-        if(!IsOwner(bot, interaction.user)){
+        if(!(await IsOwner(bot, interaction.user))){
 
             const embed = errorEmbed(
                 bot,
