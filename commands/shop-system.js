@@ -76,7 +76,14 @@ class EditShop{
         if(amount <= 0) amount = null;
 
         try{
-            const dataPromise = await Shop.create({
+            const count = await Shop.count({
+                where: { SERVERID: interaction.guildId, NAME: name}
+            });
+
+            if(count >= 1)
+                throw {name: "SequelizeUniqueConstraintError"}
+
+            await Shop.create({
                     SERVERID: interaction.guildId,
                     NAME: name,
                     DESCRIPTION: description,
@@ -91,11 +98,21 @@ class EditShop{
                     bot, "Ez a nevű áru már létezik",
                     [{name:"Megadott név", value: name}]
                 );
+                
+                interaction.reply({ embeds: [ embed ] });
+
+                return;
+
             }else{
                 const embed = errorEmbed(
                     bot, "Váratlan hibába ütköztünk",
                     [{name:"Hiba kód", value: error.name}]
                 );
+                
+                interaction.reply({ embeds: [ embed ] });
+
+                return;
+
             }
         }
 
